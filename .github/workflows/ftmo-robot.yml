@@ -1,0 +1,30 @@
+name: FTMO Robot
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Lancer le robot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
+        run: node robot_ftmo.mjs
+      - name: Sauver etat
+        run: |
+          git config user.name "ftmo-robot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A
+          git commit -m "robot update" || echo "rien a committer"
+          git push || echo "push ignore"
