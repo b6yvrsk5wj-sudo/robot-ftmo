@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 const RISK_PCT = 1.0;        // % de risque par trade
 const MAX_PER_DAY = 2;       // max nouveaux trades par jour
 const ACCOUNT_SIZE = 100000; // <-- METS ICI LA TAILLE DE TON COMPTE FTMO ($) pour le calcul de lots
+const HEARTBEAT_HOUR_UTC = 18; // heure UTC du message quotidien (18 UTC = 20h Paris en été)
 // ===============================================
 
 const INSTR=[['^GSPC','US500','S&P 500','index'],['^NDX','US100','Nasdaq 100','index'],['^DJI','US30','Dow Jones','index'],['GC=F','XAUUSD','Or','gold']];
@@ -111,8 +112,8 @@ for(const cand of selected){
 }
 for(const cand of candidates){ if(!selected.includes(cand)){ state[cand.name]={...(state[cand.name]||{}),lastSignalBar:cand.barT}; } }
 
-// --- HEARTBEAT QUOTIDIEN (1x/jour) ---
-if(state._meta.lastHB!==today){
+// --- HEARTBEAT QUOTIDIEN (1x/jour, ~20h Paris) ---
+if(new Date().getUTCHours()>=HEARTBEAT_HOUR_UTC && state._meta.lastHB!==today){
   state._meta.lastHB=today;
   const opens=[];for(const [,name,label] of INSTR){if(state[name]?.openTrade)opens.push(`• ${label} (${name}) ${state[name].dir===1?'LONG':'SHORT'}`);}
   const oTxt=opens.length?opens.join('\n'):'Aucune position ouverte.';
