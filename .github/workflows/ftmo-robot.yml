@@ -2,7 +2,7 @@ name: FTMO Robot
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -15,25 +15,21 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Boucle de surveillance toutes les 15 min
+      - name: Lancer le robot
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
+        run: node robot_ftmo.mjs
+      - name: Sauver etat
         run: |
           git config user.name "ftmo-robot"
           git config user.email "bot@users.noreply.github.com"
-          for i in $(seq 1 23); do
-            echo "=== check $i / 23 ==="
-            node robot_ftmo.mjs || true
-            git add -A
-            git commit -m "robot update" || echo "rien a committer"
-            git pull --rebase --autostash || true
-            git push || echo "push ignore"
-            if [ "$i" -lt 23 ]; then sleep 900; fi
-          done
+          git add -A
+          git commit -m "robot update" || echo "rien a committer"
+          git pull --rebase --autostash || true
+          git push || echo "push ignore"
