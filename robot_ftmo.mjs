@@ -27,10 +27,13 @@ async function tg(text){if(!TOKEN||!CHAT){console.log('[no telegram env] '+text)
   const j=await r.json();if(!j.ok)console.log('TG error',j.description);}
 
 // --- TAILLE DE POSITION : combien risquer pour 1% ---
-function sizeText(entry,sl){
+function sizeText(entry,sl,type){
   const slPts=Math.abs(entry-sl);
-  const exVal=(ACCOUNT_SIZE*RISK_PCT/100)/slPts;
-  return `\n💰 TAILLE — risque ${RISK_PCT}% de TON SOLDE ACTUEL\n→ Distance stop : ${slPts.toFixed(0)} points\n→ Exemple (solde ${f(ACCOUNT_SIZE)}$) : ~${exVal.toFixed(2)}$/point\n→ Astuce : ajuste tes lots jusqu'à voir ~${RISK_PCT}% de TON solde en risque au SL (ton appli l'affiche).\n   ➜ Ça s'adapte tout seul : compte à 115k → 1% = plus gros automatiquement.`;
+  const riskAmount=ACCOUNT_SIZE*RISK_PCT/100;
+  let lotLine;
+  if(type==='gold'){const lots=riskAmount/(slPts*100);lotLine=`\n→ OR : ~${lots.toFixed(2)} lots (compte ${f(ACCOUNT_SIZE)}$, 1 lot = 100 oz)`;}
+  else lotLine=`\n→ Indice : passe par un calculateur de lot FTMO (le point ne vaut pas pareil selon l'instrument)`;
+  return `\n💰 TAILLE — risque ${RISK_PCT}% = ${f(riskAmount)}$ (sur compte ${f(ACCOUNT_SIZE)}$)\n→ Distance SL : ${slPts.toFixed(0)} (en prix de l'instrument)${lotLine}\n⚠️ NE size JAMAIS par "points". Vise toujours ${RISK_PCT}% de risque en $.\n📱 Calculateur (PropRisk.co / FTMO calc) : solde + ${RISK_PCT}% + entrée + SL → lots exacts.`;
 }
 
 const state=existsSync(STATE)?JSON.parse(readFileSync(STATE)):{};
@@ -136,7 +139,7 @@ let alerts=0;
 for(const cand of selected){
   const {name,label,dir,entry,sl,tp,risk,barT}=cand;
   const arrow=dir===1?'🟢 ACHAT (LONG)':'🔴 VENTE (SHORT)';
-  const msg=`🚨 SIGNAL FTMO — ${label} (${name})\n\n${arrow}\n\n📍 Entrée : ${f(entry)}\n🛡️ Stop Loss : ${f(sl)}\n🎯 Take Profit : ${f(tp)}${sizeText(entry,sl)}\n\n⚙️ Place un ordre + OCO sur FTMO. (1h trend-pullback)`;
+  const msg=`🚨 SIGNAL FTMO — ${label} (${name})\n\n${arrow}\n\n📍 Entrée : ${f(entry)}\n🛡️ Stop Loss : ${f(sl)}\n🎯 Take Profit : ${f(tp)}${sizeText(entry,sl,cand.type)}\n\n⚙️ Place un ordre + OCO sur FTMO. (1h trend-pullback)`;
   await tg(msg);
   state[name]={openTrade:true,dir,entry,entryT:barT,sl,tp,lastSignalBar:barT,openedAt:new Date().toISOString()};
   log.push({time:new Date(barT).toISOString(),instrument:name,event:'OPEN',dir:dir===1?'LONG':'SHORT',entry,sl,tp,risk});
