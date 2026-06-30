@@ -5,7 +5,8 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
 // ====== RÉGLAGES (modifie ici si besoin) ======
 const RISK_PCT = 1.0;        // % de risque par trade
-const MAX_PER_DAY = 2;       // max nouveaux trades par jour
+const MAX_CONCURRENT = 3;    // max positions ouvertes en meme temps (cap 3)
+const MAX_PER_DAY = 3;       // max nouveaux trades par jour
 const ACCOUNT_SIZE = 100000; // <-- METS ICI LA TAILLE DE TON COMPTE FTMO ($) pour le calcul de lots
 const HEARTBEAT_HOUR_UTC = 18; // heure UTC du message quotidien (18 UTC = 20h Paris en été)
 // ===============================================
@@ -105,9 +106,9 @@ if(okCount===0){
   process.exit(0);
 } else if(state._meta.dataFail){state._meta.dataFail=false;await tg(`✅ Robot rétabli — récupération des données OK, surveillance reprise.`);}
 
-// Positions ouvertes après clôtures -> contraintes
-let hasOpenIndex=false, hasOpenGold=false;
-for(const [, name,, type] of INSTR){ if(state[name]?.openTrade){ if(type==='index')hasOpenIndex=true; if(type==='gold')hasOpenGold=true; } }
+// Positions ouvertes après clôtures -> compteur pour le cap simultané (cap 3)
+let openCount=0;
+for(const [, name,,] of INSTR){ if(state[name]?.openTrade) openCount++; }
 
 // PASS 2 : collecter les NOUVEAUX signaux
 const candidates=[];
@@ -127,8 +128,8 @@ for(const [, name,,] of INSTR){
 
 // PASS 3 : SÉLECTION
 candidates.sort((a,b)=>b.score-a.score);
-const selected=[];let allowIndex=!hasOpenIndex,allowGold=!hasOpenGold;let slots=MAX_PER_DAY-state._meta.opened;
-for(const cand of candidates){if(slots<=0)break;if(cand.type==='index'){if(!allowIndex)continue;allowIndex=false;}if(cand.type==='gold'){if(!allowGold)continue;allowGold=false;}selected.push(cand);slots--;}
+const selected=[];let concurrentSlots=MAX_CONCURRENT-openCount;let daySlots=MAX_PER_DAY-state._meta.opened;
+for(const cand of candidates){if(concurrentSlots<=0||daySlots<=0)break;selected.push(cand);concurrentSlots--;daySlots--;}
 
 // PASS 4 : ouvrir + alerter (AVEC taille de position)
 let alerts=0;
