@@ -39,6 +39,38 @@ const today=new Date().toISOString().slice(0,10);
 if(!state._meta) state._meta={date:today,opened:0};
 if(state._meta.date!==today){state._meta.date=today;state._meta.opened=0;}
 
+// --- PASS 0 : COMMANDES TELEGRAM (close / status / help) ---
+if(TOKEN && CHAT){
+  try{
+    const ru=await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates?offset=${(state._meta.lastUpdateId||0)+1}&timeout=0`);
+    const ju=await ru.json();
+    if(ju.ok) for(const upd of ju.result){
+      state._meta.lastUpdateId=upd.update_id;
+      const m=upd.message; if(!m||!m.text||String(m.chat.id)!==String(CHAT))continue;
+      const t=m.text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+      const ALIAS={XAUUSD:['or','gold','xau'],US500:['us500','sp500','s&p','snp'],US100:['us100','nasdaq','ndx'],US30:['us30','dow']};
+      if(/(close|clotur|ferme)/.test(t)){
+        let target=null;for(const[nm,al]of Object.entries(ALIAS)){if(al.some(a=>t.includes(a))){target=nm;break;}}
+        if(!target) await tg('Instrument non reconnu. Ex: "close or", "close us30", "close nasdaq", "close us500".');
+        else if(!state[target]?.openTrade) await tg(`Info: ${target} n a aucun trade ouvert sur le robot.`);
+        else{
+          let outcome='MANUAL',resR=0;
+          if(/\b(tp|win|gagn|gain)\b/.test(t)){outcome='TP';resR=3;}
+          else if(/\b(sl|loss|perd|perte)\b/.test(t)){outcome='SL';resR=-1;}
+          state[target].openTrade=false;state[target].outcome=outcome;
+          log.push({time:new Date().toISOString(),instrument:target,event:'CLOSE',outcome,resultR:resR,manual:true});
+          await tg(`✅ ${target} cloture manuellement (${outcome==='TP'?'+3R':outcome==='SL'?'-1R':'resultat non precise'}). Place liberee — le robot peut reprendre un signal dessus.`);
+        }
+      } else if(/(status|etat|position)/.test(t)){
+        const op=[];for(const[,nm,lb]of INSTR){if(state[nm]?.openTrade)op.push(`- ${lb} (${nm}) ${state[nm].dir===1?'LONG':'SHORT'}`);}
+        await tg(`Positions ouvertes:\n${op.length?op.join('\n'):'Aucune.'}`);
+      } else if(/(help|aide|start|commande)/.test(t)){
+        await tg('Commandes:\n- "close or tp" : cloture or en gain (+3R) et libere la place\n- "close us30 sl" : cloture en perte\n- "close nasdaq" : cloture sans preciser\n- "status" : positions ouvertes');
+      }
+    }
+  }catch(e){console.log('cmd err',e.message);}
+}
+
 // PASS 1 : fetch + indicateurs + résoudre les trades ouverts (clôtures)
 const data={};let okCount=0;
 for(const [sym,name,label,type] of INSTR){
