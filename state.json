@@ -4,14 +4,15 @@
     "opened": 0
   },
   "XAUUSD": {
-    "openTrade": true,
+    "openTrade": false,
     "dir": -1,
     "entry": 4205.7001953125,
     "entryT": 1782093600000,
     "sl": 4290.65033127932,
     "tp": 3950.8497874120394,
     "lastSignalBar": 1782093600000,
-    "openedAt": "2026-06-22T03:14:37.394Z"
+    "openedAt": "2026-06-22T03:14:37.394Z",
+    "outcome": "TP"
   },
   "US30": {
     "openTrade": true,

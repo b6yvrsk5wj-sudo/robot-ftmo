@@ -18,5 +18,14 @@
     "sl": 51167.80200542063,
     "tp": 53462.312733738116,
     "risk": 573.6276820793719
+  },
+  {
+    "time": "2026-06-30T10:36:23.051Z",
+    "instrument": "XAUUSD",
+    "event": "CLOSE",
+    "outcome": "TP",
+    "resultR": 3,
+    "manual": true,
+    "note": "TP touche cote broker, Yahoo a 4pts pres"
   }
 ]
