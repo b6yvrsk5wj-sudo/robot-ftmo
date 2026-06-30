@@ -1,7 +1,8 @@
 {
   "_meta": {
     "date": "2026-06-30",
-    "opened": 0
+    "opened": 0,
+    "lastUpdateId": 809761740
   },
   "XAUUSD": {
     "openTrade": false,
