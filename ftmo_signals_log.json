@@ -27,5 +27,15 @@
     "resultR": 3,
     "manual": true,
     "note": "TP touche cote broker, Yahoo a 4pts pres"
+  },
+  {
+    "time": "2026-06-30T12:00:00.000Z",
+    "instrument": "XAUUSD",
+    "event": "OPEN",
+    "dir": "SHORT",
+    "entry": 4029,
+    "sl": 4088.7533286508487,
+    "tp": 3849.7400140474538,
+    "risk": 59.753328650848744
   }
 ]

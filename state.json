@@ -1,19 +1,18 @@
 {
   "_meta": {
     "date": "2026-06-30",
-    "opened": 0,
+    "opened": 1,
     "lastUpdateId": 809761740
   },
   "XAUUSD": {
-    "openTrade": false,
+    "openTrade": true,
     "dir": -1,
-    "entry": 4205.7001953125,
-    "entryT": 1782093600000,
-    "sl": 4290.65033127932,
-    "tp": 3950.8497874120394,
-    "lastSignalBar": 1782093600000,
-    "openedAt": "2026-06-22T03:14:37.394Z",
-    "outcome": "TP"
+    "entry": 4029,
+    "entryT": 1782820800000,
+    "sl": 4088.7533286508487,
+    "tp": 3849.7400140474538,
+    "lastSignalBar": 1782820800000,
+    "openedAt": "2026-06-30T13:00:58.668Z"
   },
   "US30": {
     "openTrade": true,
