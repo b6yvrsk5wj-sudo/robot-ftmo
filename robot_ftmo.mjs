@@ -1,8 +1,15 @@
 // ROBOT FTMO — trend-pullback 1h sur indices US + or. Alerte Telegram sur signal (bougie CLÔTURÉE).
-// Règles: 1 position/instrument, max 1 indice + l'or en simultané, max 2 NOUVEAUX trades/jour,
-// et si plusieurs signaux -> garde les MEILLEURS (force de tendance + diversification).
+// Règles: 1 position/instrument, max 1 indice + or, max 2 nouveaux trades/jour, meilleurs signaux.
+// + Heartbeat quotidien, alerte panne, et TAILLE DE POSITION dans chaque alerte.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-const RISK_PCT=1.0, MAX_PER_DAY=2;
+
+// ====== RÉGLAGES (modifie ici si besoin) ======
+const RISK_PCT = 1.0;        // % de risque par trade
+const MAX_PER_DAY = 2;       // max nouveaux trades par jour
+const ACCOUNT_SIZE = 100000; // <-- METS ICI LA TAILLE DE TON COMPTE FTMO ($) pour le calcul de lots
+const HEARTBEAT_HOUR_UTC = 18; // heure UTC du message quotidien (18 UTC = 20h Paris en été)
+// ===============================================
+
 const INSTR=[['^GSPC','US500','S&P 500','index'],['^NDX','US100','Nasdaq 100','index'],['^DJI','US30','Dow Jones','index'],['GC=F','XAUUSD','Or','gold']];
 const TOKEN=process.env.TELEGRAM_TOKEN, CHAT=process.env.TELEGRAM_CHAT;
 const STATE='state.json', LOG='ftmo_signals_log.json';
@@ -18,23 +25,62 @@ async function tg(text){if(!TOKEN||!CHAT){console.log('[no telegram env] '+text)
   const r=await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CHAT,text})});
   const j=await r.json();if(!j.ok)console.log('TG error',j.description);}
 
+// --- TAILLE DE POSITION : combien risquer pour 1% ---
+function sizeText(entry,sl){
+  const slPts=Math.abs(entry-sl);
+  const exVal=(ACCOUNT_SIZE*RISK_PCT/100)/slPts;
+  return `\n💰 TAILLE — risque ${RISK_PCT}% de TON SOLDE ACTUEL\n→ Distance stop : ${slPts.toFixed(0)} points\n→ Exemple (solde ${f(ACCOUNT_SIZE)}$) : ~${exVal.toFixed(2)}$/point\n→ Astuce : ajuste tes lots jusqu'à voir ~${RISK_PCT}% de TON solde en risque au SL (ton appli l'affiche).\n   ➜ Ça s'adapte tout seul : compte à 115k → 1% = plus gros automatiquement.`;
+}
+
 const state=existsSync(STATE)?JSON.parse(readFileSync(STATE)):{};
 const log=existsSync(LOG)?JSON.parse(readFileSync(LOG)):[];
 const now=Date.now();
 const today=new Date().toISOString().slice(0,10);
-if(!state._meta || state._meta.date!==today) state._meta={date:today,opened:0}; // reset compteur quotidien
+if(!state._meta) state._meta={date:today,opened:0};
+if(state._meta.date!==today){state._meta.date=today;state._meta.opened=0;}
+
+// --- PASS 0 : COMMANDES TELEGRAM (close / status / help) ---
+if(TOKEN && CHAT){
+  try{
+    const ru=await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates?offset=${(state._meta.lastUpdateId||0)+1}&timeout=0`);
+    const ju=await ru.json();
+    if(ju.ok) for(const upd of ju.result){
+      state._meta.lastUpdateId=upd.update_id;
+      const m=upd.message; if(!m||!m.text||String(m.chat.id)!==String(CHAT))continue;
+      const t=m.text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+      const ALIAS={XAUUSD:['or','gold','xau'],US500:['us500','sp500','s&p','snp'],US100:['us100','nasdaq','ndx'],US30:['us30','dow']};
+      if(/(close|clotur|ferme)/.test(t)){
+        let target=null;for(const[nm,al]of Object.entries(ALIAS)){if(al.some(a=>t.includes(a))){target=nm;break;}}
+        if(!target) await tg('Instrument non reconnu. Ex: "close or", "close us30", "close nasdaq", "close us500".');
+        else if(!state[target]?.openTrade) await tg(`Info: ${target} n a aucun trade ouvert sur le robot.`);
+        else{
+          let outcome='MANUAL',resR=0;
+          if(/\b(tp|win|gagn|gain)\b/.test(t)){outcome='TP';resR=3;}
+          else if(/\b(sl|loss|perd|perte)\b/.test(t)){outcome='SL';resR=-1;}
+          state[target].openTrade=false;state[target].outcome=outcome;
+          log.push({time:new Date().toISOString(),instrument:target,event:'CLOSE',outcome,resultR:resR,manual:true});
+          await tg(`✅ ${target} cloture manuellement (${outcome==='TP'?'+3R':outcome==='SL'?'-1R':'resultat non precise'}). Place liberee — le robot peut reprendre un signal dessus.`);
+        }
+      } else if(/(status|etat|position)/.test(t)){
+        const op=[];for(const[,nm,lb]of INSTR){if(state[nm]?.openTrade)op.push(`- ${lb} (${nm}) ${state[nm].dir===1?'LONG':'SHORT'}`);}
+        await tg(`Positions ouvertes:\n${op.length?op.join('\n'):'Aucune.'}`);
+      } else if(/(help|aide|start|commande)/.test(t)){
+        await tg('Commandes:\n- "close or tp" : cloture or en gain (+3R) et libere la place\n- "close us30 sl" : cloture en perte\n- "close nasdaq" : cloture sans preciser\n- "status" : positions ouvertes');
+      }
+    }
+  }catch(e){console.log('cmd err',e.message);}
+}
 
 // PASS 1 : fetch + indicateurs + résoudre les trades ouverts (clôtures)
-const data={};
+const data={};let okCount=0;
 for(const [sym,name,label,type] of INSTR){
   try{
-    const b=await yahoo(sym);if(b.length<210)continue;
+    const b=await yahoo(sym);if(b.length<210)continue;okCount++;
     let N=b.length-1;while(N>0 && b[N].t+3600_000>now) N--;
     if(N<205)continue;
     const c=b.map(x=>x.c);const e21=ema(c,21),e50=ema(c,50),e200=ema(c,200),r14=rsi(c,14),a14=atr(b,14);
     if(e200[N]==null||a14[N]==null)continue;
     data[name]={b,N,bar:b[N],pv:b[N-1],e21,e50,e200,r14,a14,type,label};
-    // résoudre trade ouvert ?
     const pos=state[name];
     if(pos && pos.openTrade){
       let closed=null,exitPx=null;
@@ -51,54 +97,61 @@ for(const [sym,name,label,type] of INSTR){
   }catch(e){console.log(`${name}: ${e.message}`);}
 }
 
-// Positions encore ouvertes (après clôtures) -> contraintes de corrélation
+// --- ALERTE PANNE / RÉTABLISSEMENT (données) ---
+if(okCount===0){
+  if(!state._meta.dataFail){state._meta.dataFail=true;await tg(`⚠️ ALERTE ROBOT — problème de données\n\nLe robot n'a pas pu récupérer les prix (source Yahoo). La surveillance est en pause. Il réessaie automatiquement toutes les 15 min.`);}
+  writeFileSync(STATE,JSON.stringify(state,null,2));writeFileSync(LOG,JSON.stringify(log,null,2));
+  console.log('DATA FAIL — alerte envoyee, arret du run');
+  process.exit(0);
+} else if(state._meta.dataFail){state._meta.dataFail=false;await tg(`✅ Robot rétabli — récupération des données OK, surveillance reprise.`);}
+
+// Positions ouvertes après clôtures -> contraintes
 let hasOpenIndex=false, hasOpenGold=false;
 for(const [, name,, type] of INSTR){ if(state[name]?.openTrade){ if(type==='index')hasOpenIndex=true; if(type==='gold')hasOpenGold=true; } }
 
-// PASS 2 : collecter les NOUVEAUX signaux (candidats)
+// PASS 2 : collecter les NOUVEAUX signaux
 const candidates=[];
 for(const [, name,,] of INSTR){
   const d=data[name];if(!d)continue;
-  if(state[name]?.openTrade)continue; // déjà en position
+  if(state[name]?.openTrade)continue;
   const {bar,pv,e21,e50,e200,r14,a14,N,type,label}=d;
   const aL=bar.c>e50[N]&&e50[N]>e200[N], aS=bar.c<e50[N]&&e50[N]<e200[N];
   const sigL=aL&&pv.l<=e21[N-1]&&bar.c>bar.o&&bar.c>e21[N]&&r14[N]<70;
   const sigS=aS&&pv.h>=e21[N-1]&&bar.c<bar.o&&bar.c<e21[N]&&r14[N]>30;
   if((sigL||sigS) && bar.t!==state[name]?.lastSignalBar){
     const dir=sigL?1:-1;const entry=bar.c;const sl=entry-dir*3*a14[N];const risk=Math.abs(entry-sl);const tp=entry+dir*3*risk;
-    const score=Math.abs(e50[N]-e200[N])/a14[N]; // force de tendance (séparation EMA / volatilité)
+    const score=Math.abs(e50[N]-e200[N])/a14[N];
     candidates.push({name,label,type,dir,entry,sl,tp,risk,score,barT:bar.t});
   }
 }
 
-// PASS 3 : SÉLECTION des meilleurs, dans les règles
-candidates.sort((a,b)=>b.score-a.score); // meilleurs en premier
-const selected=[];
-let allowIndex=!hasOpenIndex; // max 1 indice (en comptant ceux déjà ouverts)
-let allowGold=!hasOpenGold;
-let slots=MAX_PER_DAY - state._meta.opened; // max 2 nouveaux/jour
-for(const cand of candidates){
-  if(slots<=0)break;
-  if(cand.type==='index'){ if(!allowIndex)continue; allowIndex=false; }
-  if(cand.type==='gold'){ if(!allowGold)continue; allowGold=false; }
-  selected.push(cand); slots--;
-}
+// PASS 3 : SÉLECTION
+candidates.sort((a,b)=>b.score-a.score);
+const selected=[];let allowIndex=!hasOpenIndex,allowGold=!hasOpenGold;let slots=MAX_PER_DAY-state._meta.opened;
+for(const cand of candidates){if(slots<=0)break;if(cand.type==='index'){if(!allowIndex)continue;allowIndex=false;}if(cand.type==='gold'){if(!allowGold)continue;allowGold=false;}selected.push(cand);slots--;}
 
-// PASS 4 : ouvrir + alerter
+// PASS 4 : ouvrir + alerter (AVEC taille de position)
 let alerts=0;
 for(const cand of selected){
   const {name,label,dir,entry,sl,tp,risk,barT}=cand;
   const arrow=dir===1?'🟢 ACHAT (LONG)':'🔴 VENTE (SHORT)';
-  const msg=`🚨 SIGNAL FTMO — ${label} (${name})\n\n${arrow}\n\n📍 Entrée : ${f(entry)}\n🛡️ Stop Loss : ${f(sl)}\n🎯 Take Profit : ${f(tp)}\n📏 Risque : ${RISK_PCT}% du capital (${f(risk)} pts)\n\n⚙️ Place un ordre + OCO sur FTMO. (1h trend-pullback)`;
+  const msg=`🚨 SIGNAL FTMO — ${label} (${name})\n\n${arrow}\n\n📍 Entrée : ${f(entry)}\n🛡️ Stop Loss : ${f(sl)}\n🎯 Take Profit : ${f(tp)}${sizeText(entry,sl)}\n\n⚙️ Place un ordre + OCO sur FTMO. (1h trend-pullback)`;
   await tg(msg);
   state[name]={openTrade:true,dir,entry,entryT:barT,sl,tp,lastSignalBar:barT,openedAt:new Date().toISOString()};
   log.push({time:new Date(barT).toISOString(),instrument:name,event:'OPEN',dir:dir===1?'LONG':'SHORT',entry,sl,tp,risk});
-  state._meta.opened++; alerts++;
-  console.log(`ALERTE ${name} ${dir===1?'LONG':'SHORT'} @ ${f(entry)} (score ${cand.score.toFixed(2)})`);
+  state._meta.opened++;alerts++;
+  console.log(`ALERTE ${name} ${dir===1?'LONG':'SHORT'} @ ${f(entry)}`);
 }
-// marquer les candidats non retenus (éviter de les ré-évaluer en boucle sur la même bougie)
 for(const cand of candidates){ if(!selected.includes(cand)){ state[cand.name]={...(state[cand.name]||{}),lastSignalBar:cand.barT}; } }
+
+// --- HEARTBEAT QUOTIDIEN (1x/jour, ~20h Paris) ---
+if(new Date().getUTCHours()>=HEARTBEAT_HOUR_UTC && state._meta.lastHB!==today){
+  state._meta.lastHB=today;
+  const opens=[];for(const [,name,label] of INSTR){if(state[name]?.openTrade)opens.push(`• ${label} (${name}) ${state[name].dir===1?'LONG':'SHORT'}`);}
+  const oTxt=opens.length?opens.join('\n'):'Aucune position ouverte.';
+  await tg(`🤖 Robot FTMO — point quotidien\n\n✅ En ligne et opérationnel.\n\nPositions ouvertes :\n${oTxt}\n\n${alerts?'':'Pas de nouveau signal pour le moment — normal (~2-3 trades/semaine). Patience. 💪'}`);
+}
 
 writeFileSync(STATE,JSON.stringify(state,null,2));
 writeFileSync(LOG,JSON.stringify(log,null,2));
-console.log(`Run OK ${new Date().toISOString()} | candidats: ${candidates.length} | retenus: ${alerts} | ouverts aujourd'hui: ${state._meta.opened}/${MAX_PER_DAY}`);
+console.log(`Run OK ${new Date().toISOString()} | nouveaux signaux: ${alerts} | ouverts aujourd'hui: ${state._meta.opened}/${MAX_PER_DAY}`);
