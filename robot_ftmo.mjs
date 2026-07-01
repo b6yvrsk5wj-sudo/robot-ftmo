@@ -9,6 +9,9 @@ const MAX_CONCURRENT = 3;    // max positions ouvertes en meme temps (cap 3)
 const MAX_PER_DAY = 3;       // max nouveaux trades par jour
 const ACCOUNT_SIZE = 100000; // <-- METS ICI LA TAILLE DE TON COMPTE FTMO ($) pour le calcul de lots
 const HEARTBEAT_HOUR_UTC = 18; // heure UTC du message quotidien (18 UTC = 20h Paris en été)
+// Taille du contrat par instrument (valeur en $ par 1 point de mouvement, par lot) — LU SUR TON BROKER.
+// Ajoute US100 / US500 ici quand tu auras confirmé leur "Contract size" sur MT5.
+const CONTRACT = { XAUUSD: 100, US30: 1 };
 // ===============================================
 
 const INSTR=[['^GSPC','US500','S&P 500','index'],['^NDX','US100','Nasdaq 100','index'],['^DJI','US30','Dow Jones','index'],['GC=F','XAUUSD','Or','gold']];
@@ -27,13 +30,14 @@ async function tg(text){if(!TOKEN||!CHAT){console.log('[no telegram env] '+text)
   const j=await r.json();if(!j.ok)console.log('TG error',j.description);}
 
 // --- TAILLE DE POSITION : combien risquer pour 1% ---
-function sizeText(entry,sl,type){
+function sizeText(entry,sl,name){
   const slPts=Math.abs(entry-sl);
   const riskAmount=ACCOUNT_SIZE*RISK_PCT/100;
+  const cs=CONTRACT[name];
   let lotLine;
-  if(type==='gold'){const lots=riskAmount/(slPts*100);lotLine=`\n→ OR : ~${lots.toFixed(2)} lots (compte ${f(ACCOUNT_SIZE)}$, 1 lot = 100 oz)`;}
-  else lotLine=`\n→ Indice : passe par un calculateur de lot FTMO (le point ne vaut pas pareil selon l'instrument)`;
-  return `\n💰 TAILLE — risque ${RISK_PCT}% = ${f(riskAmount)}$ (sur compte ${f(ACCOUNT_SIZE)}$)\n→ Distance SL : ${slPts.toFixed(0)} (en prix de l'instrument)${lotLine}\n⚠️ NE size JAMAIS par "points". Vise toujours ${RISK_PCT}% de risque en $.\n📱 Calculateur (PropRisk.co / FTMO calc) : solde + ${RISK_PCT}% + entrée + SL → lots exacts.`;
+  if(cs){const lots=riskAmount/(slPts*cs);lotLine=`\n→ 📏 LOTS À METTRE : ~${lots.toFixed(2)}`;}
+  else lotLine=`\n→ 📏 LOTS : passe par un calculateur (PropRisk.co) — taille de contrat pas encore confirmée pour cet instrument`;
+  return `\n💰 TAILLE — risque ${RISK_PCT}% = ${f(riskAmount)}$ (compte ${f(ACCOUNT_SIZE)}$)\n→ Distance SL : ${slPts.toFixed(0)} points${lotLine}\n⚠️ Vise toujours ${RISK_PCT}% de risque en $ (jamais "par points").`;
 }
 
 const state=existsSync(STATE)?JSON.parse(readFileSync(STATE)):{};
@@ -139,7 +143,7 @@ let alerts=0;
 for(const cand of selected){
   const {name,label,dir,entry,sl,tp,risk,barT}=cand;
   const arrow=dir===1?'🟢 ACHAT (LONG)':'🔴 VENTE (SHORT)';
-  const msg=`🚨 SIGNAL FTMO — ${label} (${name})\n\n${arrow}\n\n📍 Entrée : ${f(entry)}\n🛡️ Stop Loss : ${f(sl)}\n🎯 Take Profit : ${f(tp)}${sizeText(entry,sl,cand.type)}\n\n⚙️ Place un ordre + OCO sur FTMO. (1h trend-pullback)`;
+  const msg=`🚨 SIGNAL FTMO — ${label} (${name})\n\n${arrow}\n\n📍 Entrée : ${f(entry)}\n🛡️ Stop Loss : ${f(sl)}\n🎯 Take Profit : ${f(tp)}${sizeText(entry,sl,cand.name)}\n\n⚙️ Place un ordre + OCO sur FTMO. (1h trend-pullback)`;
   await tg(msg);
   state[name]={openTrade:true,dir,entry,entryT:barT,sl,tp,lastSignalBar:barT,openedAt:new Date().toISOString()};
   log.push({time:new Date(barT).toISOString(),instrument:name,event:'OPEN',dir:dir===1?'LONG':'SHORT',entry,sl,tp,risk});
