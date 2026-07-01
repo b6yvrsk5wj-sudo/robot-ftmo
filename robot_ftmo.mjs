@@ -11,7 +11,7 @@ const ACCOUNT_SIZE = 100000; // <-- METS ICI LA TAILLE DE TON COMPTE FTMO ($) po
 const HEARTBEAT_HOUR_UTC = 18; // heure UTC du message quotidien (18 UTC = 20h Paris en été)
 // Taille du contrat par instrument (valeur en $ par 1 point de mouvement, par lot) — LU SUR TON BROKER.
 // Ajoute US100 / US500 ici quand tu auras confirmé leur "Contract size" sur MT5.
-const CONTRACT = { XAUUSD: 100, US30: 1 };
+const CONTRACT = { XAUUSD: 100, US30: 1, US100: 1, US500: 1 };
 // ===============================================
 
 const INSTR=[['^GSPC','US500','S&P 500','index'],['^NDX','US100','Nasdaq 100','index'],['^DJI','US30','Dow Jones','index'],['GC=F','XAUUSD','Or','gold']];
