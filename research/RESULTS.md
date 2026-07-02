@@ -62,6 +62,24 @@ le combiné à 0.6% vise ~+16%/an avec un DD prudent sous les 10% — c'est ça,
 - MR-A : +14R / 2 ans (~7R/an) — PF 3.95
 - Combiné : ~27R/an, corrélation −0.16, DD combiné 12R sur 2 ans
 
+## 4. Simulation portefeuille avec les RÈGLES EXACTES du robot (question utilisateur, 2026-07-02)
+
+> Question légitime : les backtests ci-dessus prennent TOUS les trades par instrument, mais le robot live applique
+> cap 3 positions trend, max 3 nouveaux/jour, sélection par score, et anti-conflit trend/MR. Impact mesuré (`bt_portfolio.mjs`) :
+
+| Config | Sans limites | Avec règles robot | Verdict |
+|---|---|---|---|
+| Trend 1h, 2 ans (live) | +40.8R, PF 1.24, DD 12.9R | +39.6R, PF 1.28, DD 12.7R | ✅ coût ~nul, qualité même un peu meilleure |
+| Trend daily, 25 ans | +108.7R, PF 1.58 | +85.7R, PF 1.54 | −21% de R, edge intact |
+| **COMBINÉ LIVE 2 ans (1h+MR+anti-conflit)** | +55.0R, PF 1.32, DD 12.0R | **+50.8R, PF 1.35, DD 11.1R** | ✅ −8% de R, PF et DD MEILLEURS |
+
+- L'anti-conflit ne coûte presque rien en live (MR : 52 trades au lieu de 66 sur 2 ans) car les positions trend 1h durent 1-3 jours.
+  ⚠️ Si un jour le trend passait en daily (positions de plusieurs semaines), l'anti-conflit deviendrait très coûteux (MR 208 vs 621 sur 25 ans).
+- ⚠️ Pic observé : **6 positions simultanées** (3 trend + 3 MR) — à intégrer dans le sizing du challenge réel
+  (6 × 0.7% = 4.2% de pire journée théorique, sous la limite des 5% mais sans grosse marge).
+- Pourquoi les caps coûtent si peu : 4 instruments saturent rarement le cap 3, la sélection par score garde les
+  meilleurs signaux, et un signal sauté se re-déclenche souvent à la bougie suivante si les conditions persistent.
+
 ## Prochaines étapes possibles
 1. **Déployer MR-A dans le robot** (option GO/NO-GO) : signaux daily sur les 3 indices, alertes d'entrée avec lots,
    alertes de SORTIE à la clôture (nouveau type d'alerte : "sortir au marché maintenant"). ~2-3 signaux/mois en plus
