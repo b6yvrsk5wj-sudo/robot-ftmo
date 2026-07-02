@@ -1,5 +1,8 @@
-// ROBOT FTMO — trend-pullback 1h sur indices US + or. Alerte Telegram sur signal (bougie CLÔTURÉE).
-// Règles: 1 position/instrument, max 1 indice + or, max 2 nouveaux trades/jour, meilleurs signaux.
+// ROBOT FTMO — 2 stratégies. Alertes Telegram sur bougie CLÔTURÉE uniquement.
+// #1 TREND : trend-pullback 1h sur indices US + or. SL 3xATR, TP 3R. Cap 3 positions, max 3/jour.
+// #2 MR-A : retour à la moyenne DAILY, indices seulement, LONG only (validée 25 ans, voir research/RESULTS.md).
+//    Entrée close>SMA200 & RSI2<10. SL 3xATR (catastrophe). Sortie par ALERTE (close>SMA5 ou RSI2>65 ou 10 jours).
+// Règle anti-conflit : jamais 2 positions (trend + MR) sur le même instrument en même temps.
 // + Heartbeat quotidien, alerte panne, et TAILLE DE POSITION dans chaque alerte.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 
@@ -15,6 +18,7 @@ const CONTRACT = { XAUUSD: 100, US30: 1, US100: 1, US500: 1 };
 // ===============================================
 
 const INSTR=[['^GSPC','US500','S&P 500','index'],['^NDX','US100','Nasdaq 100','index'],['^DJI','US30','Dow Jones','index'],['GC=F','XAUUSD','Or','gold']];
+const MR_INSTR=[['^GSPC','US500','S&P 500'],['^NDX','US100','Nasdaq 100'],['^DJI','US30','Dow Jones']]; // stratégie #2 : indices seulement
 const TOKEN=process.env.TELEGRAM_TOKEN, CHAT=process.env.TELEGRAM_CHAT;
 const STATE='state.json', LOG='ftmo_signals_log.json';
 
@@ -60,8 +64,7 @@ if(TOKEN && CHAT){
       if(/(close|clotur|ferme)/.test(t)){
         let target=null;for(const[nm,al]of Object.entries(ALIAS)){if(al.some(a=>t.includes(a))){target=nm;break;}}
         if(!target) await tg('Instrument non reconnu. Ex: "close or", "close us30", "close nasdaq", "close us500".');
-        else if(!state[target]?.openTrade) await tg(`Info: ${target} n a aucun trade ouvert sur le robot.`);
-        else{
+        else if(state[target]?.openTrade){
           let outcome='MANUAL',resR=0;
           if(/\b(tp|win|gagn|gain)\b/.test(t)){outcome='TP';resR=3;}
           else if(/\b(sl|loss|perd|perte)\b/.test(t)){outcome='SL';resR=-1;}
@@ -69,11 +72,19 @@ if(TOKEN && CHAT){
           log.push({time:new Date().toISOString(),instrument:target,event:'CLOSE',outcome,resultR:resR,manual:true});
           await tg(`✅ ${target} cloture manuellement (${outcome==='TP'?'+3R':outcome==='SL'?'-1R':'resultat non precise'}). Place liberee — le robot peut reprendre un signal dessus.`);
         }
+        else if(state['MR_'+target]?.openTrade){
+          const p=state['MR_'+target];const resR=+(((p.lastC??p.entry)-p.entry)/p.riskDist).toFixed(2);
+          p.openTrade=false;p.outcome='MANUAL';
+          log.push({time:new Date().toISOString(),strategy:'MR',instrument:target,event:'CLOSE',outcome:'MANUAL',resultR:resR,manual:true});
+          await tg(`✅ Position MR ${target} cloturee manuellement (~${resR}R au dernier cours connu). Place liberee.`);
+        }
+        else await tg(`Info: ${target} n a aucun trade ouvert sur le robot.`);
       } else if(/(status|etat|position)/.test(t)){
-        const op=[];for(const[,nm,lb]of INSTR){if(state[nm]?.openTrade)op.push(`- ${lb} (${nm}) ${state[nm].dir===1?'LONG':'SHORT'}`);}
+        const op=[];for(const[,nm,lb]of INSTR){if(state[nm]?.openTrade)op.push(`- ${lb} (${nm}) ${state[nm].dir===1?'LONG':'SHORT'} [trend]`);}
+        for(const[,nm,lb]of MR_INSTR){if(state['MR_'+nm]?.openTrade)op.push(`- ${lb} (${nm}) LONG [MR — sortie par alerte]`);}
         await tg(`Positions ouvertes:\n${op.length?op.join('\n'):'Aucune.'}`);
       } else if(/(help|aide|start|commande)/.test(t)){
-        await tg('Commandes:\n- "close or tp" : cloture or en gain (+3R) et libere la place\n- "close us30 sl" : cloture en perte\n- "close nasdaq" : cloture sans preciser\n- "status" : positions ouvertes');
+        await tg('Commandes:\n- "close or tp" : cloture or en gain (+3R) et libere la place\n- "close us30 sl" : cloture en perte\n- "close nasdaq" : cloture sans preciser\n- "status" : positions ouvertes\n\n2 strategies actives: [trend] 1h (TP/SL fixes) et [MR] daily (achat rebond, sortie par alerte "VENDS maintenant").');
       }
     }
   }catch(e){console.log('cmd err',e.message);}
@@ -122,6 +133,7 @@ const candidates=[];
 for(const [, name,,] of INSTR){
   const d=data[name];if(!d)continue;
   if(state[name]?.openTrade)continue;
+  if(state['MR_'+name]?.openTrade)continue;
   const {bar,pv,e21,e50,e200,r14,a14,N,type,label}=d;
   const aL=bar.c>e50[N]&&e50[N]>e200[N], aS=bar.c<e50[N]&&e50[N]<e200[N];
   const sigL=aL&&pv.l<=e21[N-1]&&bar.c>bar.o&&bar.c>e21[N]&&r14[N]<70;
@@ -152,10 +164,61 @@ for(const cand of selected){
 }
 for(const cand of candidates){ if(!selected.includes(cand)){ state[cand.name]={...(state[cand.name]||{}),lastSignalBar:cand.barT}; } }
 
+// ====== STRATÉGIE #2 : MR-A (retour à la moyenne, daily, indices, LONG only) ======
+// Une bougie daily Yahoo a t = ouverture US (13:30/14:30 UTC) -> clôturée quand now >= t+7h (~30 min après la clôture US).
+function smaArr(v,len){const o=[];let s=0;for(let i=0;i<v.length;i++){s+=v[i];if(i>=len)s-=v[i-len];o.push(i>=len-1?s/len:null);}return o;}
+async function yahooD(sym){const p2=Math.floor(Date.now()/1000),p1=p2-500*86400;
+  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=1d&period1=${p1}&period2=${p2}`;
+  const j=await(await fetch(url,{headers:{'User-Agent':'Mozilla/5.0'}})).json();const r=j.chart.result[0];const ts=r.timestamp||[];const q=r.indicators.quote[0];
+  const b=[];for(let i=0;i<ts.length;i++){if(q.open[i]==null||q.high[i]==null||q.low[i]==null||q.close[i]==null)continue;b.push({t:ts[i]*1000,o:q.open[i],h:q.high[i],l:q.low[i],c:q.close[i]});}return b;}
+for(const [sym,name,label] of MR_INSTR){
+  const key='MR_'+name;
+  try{
+    const b=await yahooD(sym);if(b.length<210)continue;
+    let N=b.length-1;while(N>0&&b[N].t+7*3600_000>now)N--;
+    if(N<205)continue;
+    const c=b.map(x=>x.c);const s200=smaArr(c,200),s5=smaArr(c,5),r2=rsi(c,2),a14d=atr(b,14);
+    if(s200[N]==null||a14d[N]==null||r2[N]==null)continue;
+    const pos=state[key];
+    if(pos&&pos.openTrade){
+      pos.lastC=b[N].c;
+      let hit=null;
+      for(const x of b){if(x.t<=pos.entryT)continue;if(x.o<=pos.sl){hit=x.o;break;}if(x.l<=pos.sl){hit=pos.sl;break;}}
+      if(hit!==null){
+        const resR=+(((hit-pos.entry)/pos.riskDist)).toFixed(2);
+        pos.openTrade=false;pos.outcome='SL';
+        log.push({time:new Date().toISOString(),strategy:'MR',instrument:name,event:'CLOSE',outcome:'SL',exitPx:hit,resultR:resR});
+        await tg(`❌ Stop MR touché — ${label} (${name})\n\nSortie : ${f(hit)} (${resR}R)\nTon Stop Loss sur MT5 a dû fermer la position. Rien à faire si c'est le cas.`);
+      } else if(b[N].t>pos.entryT){
+        let held=0;for(const x of b){if(x.t>pos.entryT&&x.t<=b[N].t)held++;}
+        if(b[N].c>s5[N]||r2[N]>65||held>=10){
+          const resR=+(((b[N].c-pos.entry)/pos.riskDist)).toFixed(2);
+          pos.openTrade=false;pos.outcome='EXIT';
+          log.push({time:new Date().toISOString(),strategy:'MR',instrument:name,event:'CLOSE',outcome:'EXIT',exitPx:b[N].c,resultR:resR});
+          const usd=Math.round(Math.abs(resR)*ACCOUNT_SIZE*RISK_PCT/100).toLocaleString('en-US');
+          await tg(`🔔 SORTIE MR — ${label} (${name})\n\n➡️ VENDS ta position AU MARCHÉ maintenant (et retire le SL).\n\nEntrée ${f(pos.entry)} → sortie ~${f(b[N].c)} : ${resR>=0?'+':'−'}${Math.abs(resR)}R (${resR>=0?'+':'−'}${usd}$)\n\n(Rebond fait — la stratégie MR sort à la clôture US, après ${held} jour${held>1?'s':''}.)`);
+        }
+      }
+    } else {
+      if(state[name]?.openTrade)continue;
+      const sig=b[N].c>s200[N]&&r2[N]<10;
+      if(sig&&b[N].t!==(state[key]?.lastSignalBar)){
+        const entry=b[N].c,riskDist=3*a14d[N],sl=entry-riskDist;
+        state[key]={openTrade:true,dir:1,entry,entryT:b[N].t,riskDist,sl,lastSignalBar:b[N].t,lastC:entry,openedAt:new Date().toISOString()};
+        log.push({time:new Date(b[N].t).toISOString(),strategy:'MR',instrument:name,event:'OPEN',dir:'LONG',entry,sl,risk:riskDist});
+        alerts++;
+        await tg(`🔵 SIGNAL MR (achat du rebond) — ${label} (${name})\n\n🟢 ACHAT (LONG)\n\n📍 Entrée : ${f(entry)}\n🛡️ Stop Loss : ${f(sl)} (à placer sur MT5)\n🎯 PAS de Take Profit — je t'enverrai l'alerte de sortie (souvent 1 à 4 jours)${sizeText(entry,sl,name)}\n\n⚙️ Stratégie n°2 (MR-A : retour à la moyenne, daily). Place l'ordre + SL, PAS de TP.`);
+        console.log(`ALERTE MR ${name} LONG @ ${f(entry)}`);
+      }
+    }
+  }catch(e){console.log(`MR ${name}: ${e.message}`);}
+}
+
 // --- HEARTBEAT QUOTIDIEN (1x/jour, ~20h Paris) ---
 if(new Date().getUTCHours()>=HEARTBEAT_HOUR_UTC && state._meta.lastHB!==today){
   state._meta.lastHB=today;
-  const opens=[];for(const [,name,label] of INSTR){if(state[name]?.openTrade)opens.push(`• ${label} (${name}) ${state[name].dir===1?'LONG':'SHORT'}`);}
+  const opens=[];for(const [,name,label] of INSTR){if(state[name]?.openTrade)opens.push(`• ${label} (${name}) ${state[name].dir===1?'LONG':'SHORT'} [trend]`);}
+  for(const [,name,label] of MR_INSTR){if(state['MR_'+name]?.openTrade)opens.push(`• ${label} (${name}) LONG [MR]`);}
   const oTxt=opens.length?opens.join('\n'):'Aucune position ouverte.';
   await tg(`🤖 Robot FTMO — point quotidien\n\n✅ En ligne et opérationnel.\n\nPositions ouvertes :\n${oTxt}\n\n${alerts?'':'Pas de nouveau signal pour le moment — normal (~2-3 trades/semaine). Patience. 💪'}`);
 }
