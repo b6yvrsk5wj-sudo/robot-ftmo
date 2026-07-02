@@ -1,7 +1,7 @@
 {
   "_meta": {
     "date": "2026-07-02",
-    "opened": 0,
+    "opened": 1,
     "lastUpdateId": 809761740,
     "lastHB": "2026-07-02"
   },
@@ -38,6 +38,13 @@
     "outcome": "SL"
   },
   "US500": {
-    "lastSignalBar": 1782743400000
+    "openTrade": true,
+    "dir": 1,
+    "entry": 7477.6298828125,
+    "entryT": 1783020600000,
+    "sl": 7391.823316736962,
+    "tp": 7735.049581039115,
+    "lastSignalBar": 1783020600000,
+    "openedAt": "2026-07-02T20:30:57.151Z"
   }
 }
