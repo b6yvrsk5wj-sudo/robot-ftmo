@@ -64,6 +64,7 @@ le combiné à 0.6% vise ~+16%/an avec un DD prudent sous les 10% — c'est ça,
 
 ## Prochaines étapes possibles
 1. **Déployer MR-A dans le robot** (option GO/NO-GO) : signaux daily sur les 3 indices, alertes d'entrée avec lots,
-   alertes de SORTIE à la clôture (nouveau type d'alerte : "sortir au marché maintenant"). ~7 signaux/mois en plus.
+   alertes de SORTIE à la clôture (nouveau type d'alerte : "sortir au marché maintenant"). ~2-3 signaux/mois en plus
+   (64 trades sur les 2 dernières années), souvent groupés (les 3 indices paniquent ensemble).
 2. TP 4R sur le trend : optionnel, à décider (continuité du forward-test vs amélioration backtest).
 3. Au moment du challenge réel : passer le risque à 0.5-0.7%.

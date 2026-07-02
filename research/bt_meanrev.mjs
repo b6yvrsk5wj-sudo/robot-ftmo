@@ -32,7 +32,7 @@ export function runMR(bars, name, variant) {
       }
       if (exitPx !== null) {
         const r = dir * (exitPx - entry) / riskDist - cost / riskDist;
-        trades.push({ instr: name, dir, entryT: pos.entryT, exitT: bar.t, r });
+        trades.push({ instr: name, dir, entryT: pos.entryT, exitT: bar.t, r, entryPx: entry, exitPx, sl: pos.sl, held: pos.held });
         pos = null;
       }
       continue;
