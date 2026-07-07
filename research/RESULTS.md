@@ -94,10 +94,29 @@ le combiné à 0.6% vise ~+16%/an avec un DD prudent sous les 10% — c'est ça,
 | 1.25% | 88% | 2.2 mois | 88% | 0.8 mois |
 | 1.5% | 77% | 1.4 mois | 82% | 0.7 mois |
 
-**Stratégie retenue (asymétrie coût/bénéfice)** : pendant le CHALLENGE, risquer 1%/trade — 96% de réussite par
-phase (~92% les deux), durée totale médiane ~4 mois, et l'échec ne coûte que les frais (~500€), pas le compte.
-Une fois FINANCÉ, redescendre à 0.5-0.7% — là, cramer coûte le compte, et à 1% le DD historique (12.9R) le tuerait.
-Attente réaliste totale : forward-test (encore ~5 semaines) + P1+P2 (~4-6 mois) → compte financé début-mi 2027.
+**Parcours complet jusqu'au financement (rachats de challenge inclus, `mc_pipeline.mjs`)** :
+
+| Risque challenge | Médiane | 90e pct | Financé ≤6 mois | Frais moyens |
+|---|---|---|---|---|
+| 1.0% | 6.9 mois | 14.6 | 42% | 619€ |
+| 1.25% | 4.6 mois | 13.0 | 59% | 853€ |
+| 1.5% | 3.9 mois | 10.6 | 68% | 994€ |
+
+**Survie du compte FINANCÉ sur 12 mois, AVEC retraits mensuels** (le coussin repart à ~0 à chaque payout —
+c'est ça le scénario réaliste, et ça change tout) :
+
+| Risque financé | Compte perdu dans l'année | Encaissé/an si survie (part trader 80%) |
+|---|---|---|
+| 0.5% | 0% | ~11 400 $ (sur 100k) |
+| **0.7%** | **0%** | **~16 100 $** |
+| 1.0% | **34%** ☠️ | ~26 100 $ |
+| 1.25% | 69% ☠️ | — |
+
+**PLAN FINAL** : challenge à **1.25-1.5%** (l'échec ne coûte que ~540€ de frais, la vitesse vaut le coup) puis
+compte financé à **0.7% MAXIMUM** (à 1%, avec les retraits, on perd le compte 1 année sur 3 — le pire jour
+historique −4.5R passe encore à 1% face à la règle des −5%/jour, mais le DD de 12.9R tue un compte sans coussin).
+La frontière 0.7% n'est pas arbitraire : il faut que le pire DD historique (12.9R) reste sous les 10% → 10/12.9×1.3 marge.
+Attente réaliste : forward-test (~5 semaines) + parcours challenge (~4-5 mois médiane) → financé début 2027.
 
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
