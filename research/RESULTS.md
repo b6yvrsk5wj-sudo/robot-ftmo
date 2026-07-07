@@ -80,9 +80,26 @@ le combiné à 0.6% vise ~+16%/an avec un DD prudent sous les 10% — c'est ça,
 - Pourquoi les caps coûtent si peu : 4 instruments saturent rarement le cap 3, la sélection par score garde les
   meilleurs signaux, et un signal sauté se re-déclenche souvent à la bougie suivante si les conditions persistent.
 
+## 5. Monte Carlo du challenge FTMO (2026-07-07) — combien de temps, quelles chances ?
+
+> 20 000 simulations par config (`mc_challenge.mjs`) : bootstrap circulaire de la séquence réelle des trades
+> (config live, règles robot). Règles FTMO : cible +10% (P1) / +5% (P2), perte max −10% statique, −5%/jour, sans limite de temps.
+> Approximation trades clôturés (flottant non modélisé → légèrement optimiste).
+
+| Risque/trade | P1 : réussite | P1 : durée médiane (90e pct) | P2 : réussite | P2 : médiane |
+|---|---|---|---|---|
+| 0.5% | 100% | 7.3 mois (15.7) | 100% | 3.0 mois |
+| 0.7% | 100% | 6.1 mois (13.5) | 100% | 2.3 mois |
+| **1.0%** | **96%** | **2.9 mois (10.2)** | **96%** | **1.1 mois** |
+| 1.25% | 88% | 2.2 mois | 88% | 0.8 mois |
+| 1.5% | 77% | 1.4 mois | 82% | 0.7 mois |
+
+**Stratégie retenue (asymétrie coût/bénéfice)** : pendant le CHALLENGE, risquer 1%/trade — 96% de réussite par
+phase (~92% les deux), durée totale médiane ~4 mois, et l'échec ne coûte que les frais (~500€), pas le compte.
+Une fois FINANCÉ, redescendre à 0.5-0.7% — là, cramer coûte le compte, et à 1% le DD historique (12.9R) le tuerait.
+Attente réaliste totale : forward-test (encore ~5 semaines) + P1+P2 (~4-6 mois) → compte financé début-mi 2027.
+
 ## Prochaines étapes possibles
-1. **Déployer MR-A dans le robot** (option GO/NO-GO) : signaux daily sur les 3 indices, alertes d'entrée avec lots,
-   alertes de SORTIE à la clôture (nouveau type d'alerte : "sortir au marché maintenant"). ~2-3 signaux/mois en plus
-   (64 trades sur les 2 dernières années), souvent groupés (les 3 indices paniquent ensemble).
-2. TP 4R sur le trend : optionnel, à décider (continuité du forward-test vs amélioration backtest).
-3. Au moment du challenge réel : passer le risque à 0.5-0.7%.
+1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
+2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
+3. Challenge réel : risque 1%/trade pendant les phases, puis 0.5-0.7% sur le compte financé (voir section 5).
