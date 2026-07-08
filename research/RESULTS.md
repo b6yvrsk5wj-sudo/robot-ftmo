@@ -112,11 +112,22 @@ c'est ça le scénario réaliste, et ça change tout) :
 | 1.0% | **34%** ☠️ | ~26 100 $ |
 | 1.25% | 69% ☠️ | — |
 
-**PLAN FINAL** : challenge à **1.25-1.5%** (l'échec ne coûte que ~540€ de frais, la vitesse vaut le coup) puis
-compte financé à **0.7% MAXIMUM** (à 1%, avec les retraits, on perd le compte 1 année sur 3 — le pire jour
-historique −4.5R passe encore à 1% face à la règle des −5%/jour, mais le DD de 12.9R tue un compte sans coussin).
-La frontière 0.7% n'est pas arbitraire : il faut que le pire DD historique (12.9R) reste sous les 10% → 10/12.9×1.3 marge.
-Attente réaliste : forward-test (~5 semaines) + parcours challenge (~4-5 mois médiane) → financé début 2027.
+**PLAN FINAL (décision utilisateur 2026-07-07)** : challenge à **1.5% en "MODE CHALLENGE"** puis compte financé à
+**0.7% MAXIMUM — promesse actée** (à 1%, avec les retraits, on perd le compte 1 année sur 3).
+
+**MODE CHALLENGE (`mc_challenge_mode.mjs`)** : à 1.5%, le tueur est la règle des −5%/jour (pire jour historique
+−4.5R × 1.5% = −6.75% = mort). Parade : **cap TOTAL de 3 positions (trend+MR confondus)** pendant le challenge →
+pire jour théorique −3R × 1.5% = −4.5%, structurellement sous la limite. Résultat simulé (à 1.5%, rachats inclus) :
+
+| Config 1.5% | Médiane | 90e pct | Financé ≤6 mois | Frais moyens |
+|---|---|---|---|---|
+| Règles normales (jusqu'à 6 pos.) | 3.9 mois | 10.8 | 68% | 1001€ |
+| **MODE CHALLENGE (cap total 3)** | **3.4 mois** | **8.9** | **76%** | **921€** |
+
+(Le cap total 3 n'aide PAS à ≤1.25% — utile uniquement à 1.5%.)
+**À faire au moment du GO** (après forward-test, ~fin août) : passer `RISK_PCT=1.5` + implémenter `TOTAL_CAP=3`
+partagé trend/MR dans le robot. Une fois financé : `RISK_PCT=0.7`, retirer le cap total (retour aux règles normales).
+Attente réaliste : forward-test (~5 semaines) + challenge (~3.4 mois médiane) → financé fin 2026-début 2027.
 
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).

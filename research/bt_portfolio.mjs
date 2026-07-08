@@ -15,7 +15,7 @@ function prepMR(bars) {
   return { bars, c, s200: sma(c, 200), s5: sma(c, 5), r2: rsi(c, 2), a14: atr(bars, 14) };
 }
 
-export function simulate(interval, { maxConc = Infinity, maxPerDay = Infinity, withMR = false, conflict = true } = {}) {
+export function simulate(interval, { maxConc = Infinity, maxPerDay = Infinity, withMR = false, conflict = true, totalCap = Infinity } = {}) {
   const dataT = loadData(interval), dataD = loadData('1d');
   const T = {}, M = {};
   for (const [, name] of INSTR) if (dataT[name]) T[name] = prepTrend(dataT[name]);
@@ -82,7 +82,7 @@ export function simulate(interval, { maxConc = Infinity, maxPerDay = Infinity, w
     }
     cands.sort((a, b) => b.score - a.score);
     for (const cd of cands) {
-      if (Object.keys(posT).length >= maxConc || opened >= maxPerDay) { skippedCaps++; continue; }
+      if (Object.keys(posT).length >= maxConc || opened >= maxPerDay || Object.keys(posT).length + Object.keys(posM).length >= totalCap) { skippedCaps++; continue; }
       posT[cd.name] = { dir: cd.dir, entry: cd.entry, entryT: cd.t, riskDist: cd.riskDist, sl: cd.entry - cd.dir * cd.riskDist };
       opened++;
     }
@@ -111,6 +111,7 @@ export function simulate(interval, { maxConc = Infinity, maxPerDay = Infinity, w
       if (s200[i] == null || a14[i] == null || r2[i] == null) continue;
       if (!(bar.c > s200[i] && r2[i] < 10)) continue;
       if (conflict && posT[name]) { skippedConflict++; continue; }
+      if (Object.keys(posT).length + Object.keys(posM).length >= totalCap) { skippedCaps++; continue; }
       posM[name] = { entry: bar.c, entryT: bar.t, riskDist: 3 * a14[i], sl: bar.c - 3 * a14[i], held: 0 };
     }
   }
