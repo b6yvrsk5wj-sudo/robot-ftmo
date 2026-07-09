@@ -125,8 +125,14 @@ pire jour théorique −3R × 1.5% = −4.5%, structurellement sous la limite. R
 | **MODE CHALLENGE (cap total 3)** | **3.4 mois** | **8.9** | **76%** | **921€** |
 
 (Le cap total 3 n'aide PAS à ≤1.25% — utile uniquement à 1.5%.)
-**À faire au moment du GO** (après forward-test, ~fin août) : passer `RISK_PCT=1.5` + implémenter `TOTAL_CAP=3`
-partagé trend/MR dans le robot. Une fois financé : `RISK_PCT=0.7`, retirer le cap total (retour aux règles normales).
+**CHECKLIST DU JOUR GO** (après forward-test, ~fin août) :
+1. Comparer le relevé MT5 démo aux logs du robot (résultats réels vs théoriques : spreads, slippage, exécution) —
+   c'est LE critère de validation final avant de payer le challenge.
+2. Passer `RISK_PCT=1.5` + implémenter `TOTAL_CAP=3` partagé trend/MR dans le robot.
+3. Ajouter un watchdog "dead-man switch" (ping healthchecks.io à chaque run → alerte si le robot cesse de tourner,
+   car un heartbeat ABSENT ne se remarque pas). ~5 lignes, à faire dans le même commit que le mode challenge.
+4. Mettre `ACCOUNT_SIZE` à la taille réelle du compte challenge acheté.
+Une fois financé : `RISK_PCT=0.7`, retirer le cap total (retour aux règles normales).
 Attente réaliste : forward-test (~5 semaines) + challenge (~3.4 mois médiane) → financé fin 2026-début 2027.
 
 ## Prochaines étapes possibles
