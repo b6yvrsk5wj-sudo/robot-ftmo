@@ -126,7 +126,9 @@ pire jour théorique −3R × 1.5% = −4.5%, structurellement sous la limite. R
 
 (Le cap total 3 n'aide PAS à ≤1.25% — utile uniquement à 1.5%.)
 **CHECKLIST DU JOUR GO** (après forward-test, ~fin août) :
-1. Comparer le relevé MT5 démo aux logs du robot (résultats réels vs théoriques : spreads, slippage, exécution) —
+0. **ACHETER LE COMPTE "FTMO SWING"** (pas le normal !) — le compte FTMO standard interdit de garder des positions
+   le week-end ; nos trades durent des semaines. Sans Swing, le plan meurt le premier vendredi soir. Même tarif.
+1. Comparer le relevé MT5 démo aux logs du robot (résultats réels vs théoriques : spreads, slippage, exécution, SWAPS) —
    c'est LE critère de validation final avant de payer le challenge.
 2. Passer `RISK_PCT=1.5` + implémenter `TOTAL_CAP=3` partagé trend/MR dans le robot.
 3. Ajouter un watchdog "dead-man switch" (ping healthchecks.io à chaque run → alerte si le robot cesse de tourner,
@@ -134,6 +136,23 @@ pire jour théorique −3R × 1.5% = −4.5%, structurellement sous la limite. R
 4. Mettre `ACCOUNT_SIZE` à la taille réelle du compte challenge acheté.
 Une fois financé : `RISK_PCT=0.7`, retirer le cap total (retour aux règles normales).
 Attente réaliste : forward-test (~5 semaines) + challenge (~3.4 mois médiane) → financé fin 2026-début 2027.
+
+## 6. SWAPS (frais overnight) — question utilisateur du 2026-07-20, angle mort corrigé
+
+> Les backtests incluaient le spread mais PAS le financement quotidien. FTMO facture les swaps (triple le mercredi) ;
+> le swap-free n'existe que pour les comptes islamiques. Impact estimé (`bt_swap.mjs`, taux centraux −0.015%/j indices
+> long, −0.02%/j or long, ~0 short — **à confirmer avec la fenêtre Spécification MT5 de l'utilisateur**) :
+
+| Config live 2 ans | Sans swap | Avec swap central |
+|---|---|---|
+| Trend 1h | +37.8R, PF 1.26 | **+22.7R, PF 1.15** (−40%) |
+| MR-A daily | +13.1R | +12.2R (quasi immune : stop daily large → notionnel/risque ~15 vs ~60-90 pour le trend 1h) |
+| Combiné | +50.8R (~2.1R/mois) | **+34.8R (~1.45R/mois)** |
+
+- Marathons (>21j) : swap moyen −0.34R mais résultat net moyen **+1.18R** → on ne coupe PAS les trades longs, ils restent les meilleurs.
+- Challenge recalibré (mode challenge 1.5%, `mc_swap.mjs`) : médiane 3.4 → **4.4 mois**, financé ≤6 mois 76% → **59%**, frais moyens ~**1460€**. Le plan tient, les attentes sont ajustées.
+- La part de l'edge portée par MR-A augmente (elle ne paie presque pas de swap).
+- Le forward-test MT5 de l'utilisateur capture les swaps réels → la comparaison relevé/logs les mesurera automatiquement.
 
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).

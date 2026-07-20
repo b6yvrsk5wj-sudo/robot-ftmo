@@ -60,7 +60,7 @@ export function simulate(interval, { maxConc = Infinity, maxPerDay = Infinity, w
         else if (bar.o <= tp) exitPx = bar.o; else if (bar.l <= tp) exitPx = tp;
       }
       if (exitPx !== null) {
-        trades.push({ instr: name, dir, entryT: p.entryT, exitT: bar.t, r: dir * (exitPx - entry) / riskDist - COST_PTS[name] / riskDist });
+        trades.push({ instr: name, dir, entryT: p.entryT, exitT: bar.t, r: dir * (exitPx - entry) / riskDist - COST_PTS[name] / riskDist, entryPx: entry, riskDist });
         delete posT[name];
       }
     }
@@ -96,7 +96,7 @@ export function simulate(interval, { maxConc = Infinity, maxPerDay = Infinity, w
       if (bar.o <= p.sl) exitPx = bar.o; else if (bar.l <= p.sl) exitPx = p.sl;
       else { p.held++; if (bar.c > s5[i] || r2[i] > 65 || p.held >= 10) exitPx = bar.c; }
       if (exitPx !== null) {
-        mrTrades.push({ instr: name, dir: 1, entryT: p.entryT, exitT: bar.t, r: (exitPx - p.entry) / p.riskDist - COST_PTS[name] / p.riskDist });
+        mrTrades.push({ instr: name, dir: 1, entryT: p.entryT, exitT: bar.t, r: (exitPx - p.entry) / p.riskDist - COST_PTS[name] / p.riskDist, entryPx: p.entry, riskDist: p.riskDist });
         delete posM[name];
       }
     }
