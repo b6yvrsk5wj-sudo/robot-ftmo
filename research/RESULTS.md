@@ -150,9 +150,18 @@ Attente réaliste : forward-test (~5 semaines) + challenge (~3.4 mois médiane) 
 | Combiné | +50.8R (~2.1R/mois) | **+34.8R (~1.45R/mois)** |
 
 - Marathons (>21j) : swap moyen −0.34R mais résultat net moyen **+1.18R** → on ne coupe PAS les trades longs, ils restent les meilleurs.
-- Challenge recalibré (mode challenge 1.5%, `mc_swap.mjs`) : médiane 3.4 → **4.4 mois**, financé ≤6 mois 76% → **59%**, frais moyens ~**1460€**. Le plan tient, les attentes sont ajustées.
-- La part de l'edge portée par MR-A augmente (elle ne paie presque pas de swap).
-- Le forward-test MT5 de l'utilisateur capture les swaps réels → la comparaison relevé/logs les mesurera automatiquement.
+
+**TAUX RÉELS relevés par l'utilisateur (MT5, 2026-07-20)** — en points/jour : US100 L −620.96/S +25.84,
+US30 L −1133.52/S +47.17, US500 L −157.71/S +2.44, XAUUSD L −73.08/S −23.55. Interprétation validée par
+cohérence croisée : ≈ **−0.021%/jour du notionnel en long indices** (≈7.7%/an de financement, cohérent avec les taux 2026),
+short indices légèrement POSITIF (~+0.001%/j), or négatif des deux côtés. (Caveat : taux du broker démo ; FTMO peut différer un peu.)
+
+**Résultats aux taux réels** : trend 1h +37.8R → **+18.0R (PF 1.12)** — le swap mange ~la moitié de l'edge 1h ;
+MR-A quasi intacte (+11.8R, PF 3.92) ; combiné +29.8R (~**1.25R/mois net**). L'edge net se répartit désormais ~60/40
+entre trend et MR — MR-A devient un pilier, plus un complément.
+- Challenge recalibré aux taux réels (mode 1.5%, `mc_swap.mjs`) : **médiane 4.4 mois**, financé ≤6 mois **62%**, frais moyens ~**1440€**.
+- ⚠️ L'edge NET du trend 1h aux taux réels est mince (PF 1.12 sur 2 ans) — c'est LE point que le forward-test doit confirmer.
+  Le démo paie les vrais swaps → le solde MT5 de l'utilisateur reflète déjà la réalité nette.
 
 ## 7. REGISTRE DES RISQUES (audit "détails qui tuent", 2026-07-20)
 

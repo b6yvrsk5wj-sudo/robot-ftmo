@@ -2,18 +2,17 @@
 import { simulate } from './bt_portfolio.mjs';
 import { fmtTable } from './lib.mjs';
 
+import { REAL_RATES } from './bt_swap.mjs';
 const { trades, mrTrades } = simulate('1h', { maxConc: 3, maxPerDay: 3, withMR: true, conflict: true, totalCap: 3 });
 function applySwap(seq) {
-  const RATE = { idxL: -0.015, idxS: 0, goldL: -0.02, goldS: 0 };
   return seq.map(t => {
     const days = (t.exitT - t.entryT) / 86400000;
-    const gold = t.instr === 'XAUUSD';
-    const rate = gold ? (t.dir === 1 ? RATE.goldL : RATE.goldS) : (t.dir === 1 ? RATE.idxL : RATE.idxS);
+    const rate = REAL_RATES[t.instr][t.dir === 1 ? 'L' : 'S'];
     return { ...t, r: t.r + (rate / 100) * (t.entryPx / t.riskDist) * days };
   });
 }
 const raw = [...trades, ...mrTrades].sort((a, b) => a.exitT - b.exitT);
-const seqs = { 'sans swap (plan actuel)': raw, 'avec swap central': applySwap(raw) };
+const seqs = { 'sans swap (plan actuel)': raw, 'avec TAUX RÉELS MT5': applySwap(raw) };
 
 const FEE = 540;
 function pipeline(seq, riskPct, sims = 20000) {

@@ -8,13 +8,22 @@ import { stats, fmtTable } from './lib.mjs';
 
 const { trades, mrTrades } = simulate('1h', { maxConc: 3, maxPerDay: 3, withMR: true, conflict: true });
 
-function applySwap(seq, mult) {
+// Taux RÉELS relevés par l'utilisateur le 2026-07-20 (MT5, "échange positions longues/courtes", en points/jour) :
+// US100 L -620.96 / S +25.84 | XAUUSD L -73.08 / S -23.55 | US30 L -1133.52 / S +47.17 | US500 L -157.71 / S +2.44
+// Convertis en %/jour du notionnel (point = 0.01 unité d'indice) — ≈ -0.021%/j long indices ≈ 7.7%/an de financement.
+export const REAL_RATES = {
+  US500: { L: -0.0211, S: +0.0003 }, US100: { L: -0.0217, S: +0.0009 },
+  US30: { L: -0.0218, S: +0.0009 }, XAUUSD: { L: -0.0182, S: -0.0059 },
+};
+
+function applySwap(seq, mult, real = false) {
   // mult = multiplicateur du scénario (1 = central) ; taux en %/jour calendaire (négatif = coût)
   const RATE = { idxL: -0.015, idxS: 0, goldL: -0.02, goldS: 0 };
   return seq.map(t => {
     const days = (t.exitT - t.entryT) / 86400000;
     const gold = t.instr === 'XAUUSD';
-    const rate = (gold ? (t.dir === 1 ? RATE.goldL : RATE.goldS) : (t.dir === 1 ? RATE.idxL : RATE.idxS)) * mult;
+    const rate = real ? REAL_RATES[t.instr][t.dir === 1 ? 'L' : 'S']
+      : (gold ? (t.dir === 1 ? RATE.goldL : RATE.goldS) : (t.dir === 1 ? RATE.idxL : RATE.idxS)) * mult;
     const swapR = (rate / 100) * (t.entryPx / t.riskDist) * days;
     return { ...t, r: t.r + swapR, swapR };
   });
@@ -26,6 +35,7 @@ for (const [label, seq] of [['TREND 1h', trades], ['MR-A daily', mrTrades], ['CO
   for (const [sc, m] of [['swap central (-0.015%/j idx)', 1], ['swap faible (-0.01%/j)', 0.67], ['swap fort (-0.025%/j)', 1.67]]) {
     rows.push({ scénario: sc, ...stats(applySwap(seq, m)) });
   }
+  rows.push({ scénario: 'TAUX RÉELS MT5 (2026-07-20)', ...stats(applySwap(seq, 1, true)) });
   console.log(`\n--- ${label} ---`);
   console.log(fmtTable(rows));
 }
