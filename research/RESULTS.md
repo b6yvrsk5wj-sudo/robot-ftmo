@@ -154,6 +154,36 @@ Attente réaliste : forward-test (~5 semaines) + challenge (~3.4 mois médiane) 
 - La part de l'edge portée par MR-A augmente (elle ne paie presque pas de swap).
 - Le forward-test MT5 de l'utilisateur capture les swaps réels → la comparaison relevé/logs les mesurera automatiquement.
 
+## 7. REGISTRE DES RISQUES (audit "détails qui tuent", 2026-07-20)
+
+### ✅ Vérifiés et réglés
+- **Compte Swing obligatoire** (week-end + news sans restriction) — item 0 du GO. Léger surcoût possible selon la gamme.
+- **Swaps** quantifiés (section 6), à affiner avec les specs MT5 de l'utilisateur.
+- **MT5 disponible en Europe** chez FTMO (la restriction MetaTrader ne concerne que les clients US).
+- **Robots/EA autorisés** si stratégie propre (la nôtre est unique) et non hyperactive (~10 trades/mois : très loin des seuils).
+- **Pas de limite de temps** sur les phases ; minimum 4 jours de trading : trivial. **Pas de consistency rule** chez FTMO.
+
+### ⚠️ Risques actifs (avec mitigation)
+1. **Gaps de week-end au-delà du SL** : un lundi peut ouvrir SOUS le stop → perte >1R/position ; 3 positions corrélées + gros gap
+   peut menacer la règle des −5%/jour. Partiellement inclus dans les backtests (les gaps historiques y sont). Résiduel accepté ;
+   le cap total 3 en mode challenge est la principale protection.
+2. **La limite journalière FTMO compte le FLOTTANT** (équité vs minuit CET) — nos simulations comptent le clôturé → légèrement
+   optimistes. Au stade VPS : kill-switch sur équité temps réel.
+3. **Yahoo = API non officielle**, peut casser sans préavis (précédent en 2023). Le robot alerte déjà en cas de panne ;
+   plan B le jour J : basculer sur Stooq/TwelveData (~1h de code).
+4. **Réglementation UE des prop firms en durcissement** (ESMA/MiFID II 2024-2026) : pas d'interdiction, modèle susceptible
+   d'évoluer. Risque lent — point de veille trimestriel, ne bloque pas le plan.
+5. **Impôts France** : les payouts FTMO sont des revenus à déclarer (BNC/prestation) — le "~16k$/an part trader" est un montant
+   AVANT impôts (~30-45% selon statut). À intégrer avant le premier payout.
+6. **Absences/vacances** : une alerte non exécutée = trade raté (acceptable statistiquement, à me signaler pour le tracking).
+   Prévenir à l'avance pour les vacances d'août.
+7. **Divergence réel/théorique NON mesurée** : captures MT5 (historique + spécifications swap) toujours en attente — devient
+   BLOQUANT au jour GO.
+
+### Mineurs notés
+Dépôt public (stratégie visible, token en secret : OK) ; expiration possible des démos MT5 inactives ; le cron GitHub de secours
+peut se désactiver après 60 j sans activité (non pertinent : cron-job.org principal + commits fréquents).
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
