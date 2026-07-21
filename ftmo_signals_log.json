@@ -111,5 +111,14 @@
     "entry": 28592.658203125,
     "sl": 26722.65840597448,
     "risk": 1869.999797150523
+  },
+  {
+    "time": "2026-07-21T20:30:55.994Z",
+    "strategy": "MR",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "outcome": "EXIT",
+    "exitPx": 29155.1796875,
+    "resultR": 0.3
   }
 ]
