@@ -120,5 +120,13 @@
     "outcome": "EXIT",
     "exitPx": 29155.1796875,
     "resultR": 0.3
+  },
+  {
+    "time": "2026-07-22T14:15:47.981Z",
+    "instrument": "XAUUSD",
+    "event": "CLOSE",
+    "outcome": "SL",
+    "exitPx": 4158.709444505937,
+    "resultR": -1
   }
 ]
