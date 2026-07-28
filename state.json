@@ -27,14 +27,15 @@
     "openedAt": "2026-06-22T17:18:01.858Z"
   },
   "US100": {
-    "openTrade": true,
+    "openTrade": false,
     "dir": -1,
     "entry": 28997.4296875,
     "entryT": 1784748600000,
     "sl": 29400.176415243826,
     "tp": 27789.18950426852,
     "lastSignalBar": 1784748600000,
-    "openedAt": "2026-07-22T20:30:57.530Z"
+    "openedAt": "2026-07-22T20:30:57.530Z",
+    "outcome": "TP"
   },
   "US500": {
     "openTrade": false,
@@ -48,15 +49,14 @@
     "outcome": "SL"
   },
   "MR_US100": {
-    "openTrade": false,
+    "openTrade": true,
     "dir": 1,
-    "entry": 28592.658203125,
-    "entryT": 1784295000000,
-    "riskDist": 1869.999797150523,
-    "sl": 26722.65840597448,
-    "lastSignalBar": 1784295000000,
-    "lastC": 29155.1796875,
-    "openedAt": "2026-07-17T20:31:00.102Z",
-    "outcome": "EXIT"
+    "entry": 28039.2109375,
+    "entryT": 1785159000000,
+    "riskDist": 1792.987868634436,
+    "sl": 26246.223068865565,
+    "lastSignalBar": 1785159000000,
+    "lastC": 28039.2109375,
+    "openedAt": "2026-07-28T13:30:58.719Z"
   }
 }

@@ -164,5 +164,23 @@
     "outcome": "SL",
     "exitPx": 4034.737582907928,
     "resultR": -1
+  },
+  {
+    "time": "2026-07-28T13:30:58.134Z",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "outcome": "TP",
+    "exitPx": 27789.18950426852,
+    "resultR": 3
+  },
+  {
+    "time": "2026-07-27T13:30:00.000Z",
+    "strategy": "MR",
+    "instrument": "US100",
+    "event": "OPEN",
+    "dir": "LONG",
+    "entry": 28039.2109375,
+    "sl": 26246.223068865565,
+    "risk": 1792.987868634436
   }
 ]
