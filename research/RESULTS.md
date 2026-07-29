@@ -330,6 +330,38 @@ Swap-free **ET** pas de règle de consistance **ET** week-end autorisé (évalua
 - **Velotrade / Blueberry Funded** : annoncés sans consistance — statut swap non vérifié, à instruire
 Si ce profil est trouvé : **~2.8 mois médiane, 83% ≤6 mois**. C'est l'objectif de recherche.
 
+## 10. 🎯 CANDIDAT TROUVÉ : FT+ **1-STEP EXPRESS** (2026-07-29) — ce n'est PAS la formule 2-Step analysée en section 9
+
+**Erreur corrigée** : la section 9 analysait la formule *2-Step Classic* de Funded Trading Plus (consistance 35% ⇒ disqualifiée).
+La formule **1-Step Express** de la même firme est différente et coche TOUT :
+sans swap ✅ | **AUCUNE règle de consistance** ✅ | week-end/overnight ✅ | **UNE SEULE phase, cible 10%** ✅
+| DD max **8% statique** (⚠️ une option 6% *trailing* existe — **il FAUT choisir le statique**) | DD jour 4%.
+
+### Monte Carlo — parcours jusqu'au compte financé (`mc_ft1step.mjs`, 20 000 sims)
+| Config | Médiane | 90e pct | ≤6 mois | Frais moyens |
+|---|---|---|---|---|
+| FTMO 1.5% (2 phases, swaps) | 4.7 mois | 11.7 | 57% | 1 192€ |
+| FTMO 1.25% | 6.4 mois | 16.6 | 48% | 1 147€ |
+| **FT+ 1-Step 1.0%** | **2.8 mois** | 9.1 | **82%** | 675€ |
+| **FT+ 1-Step 1.25%** | **2.3 mois** | 5.4 | **94%** | 784€ |
+| **FT+ 1-Step 1.5%** | **1.7 mois** | 4.4 | **99%** | 860€ |
+
+**Trois effets cumulés** : pas de swap (~la moitié de l'edge récupérée) + **une seule phase au lieu de deux** +
+pas de consistance. Le DD jour à 4% (vs 5% FTMO) s'avère **sans impact** (test de sensibilité : résultats identiques).
+
+### ❌ Goat Funded Trader — écarté
+Sans swap ✅, week-end ✅, pas de consistance pendant le challenge ✅ — **MAIS règle de consistance 15% une fois FINANCÉ**
+(pire que 35%), plafond sur les 2 premiers payouts, et friction de paiement bien documentée dans les avis négatifs.
+
+### ⚠️ À VÉRIFIER AVANT TOUT ACHAT (bloquants)
+1. **Prix réel** du 1-Step Express 100k (hypothèse 600€ dans la sim ; une source évoque ~199$/10k = ~1 990$ — à confirmer,
+   le prix ne change pas le délai mais change le budget).
+2. **Choisir le DD 8% STATIQUE**, jamais le 6% trailing (un trailing tuerait la stratégie).
+3. **Règles du compte FINANCÉ** (pas seulement de l'évaluation) : consistance ? week-end ? plafond de payout ?
+   C'est le piège de Goat — vérifier que FT+ ne fait pas pareil.
+4. Fiabilité : Trustpilot 4.7/5 sur 4 500+ avis, 1.74% de refus publiés ; points noirs = revue de risque discrétionnaire, KYC.
+5. Confirmer que le sans-swap couvre bien **indices ET or**.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
