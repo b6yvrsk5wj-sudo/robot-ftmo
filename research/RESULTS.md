@@ -293,6 +293,43 @@ le délai par deux ET permet de garder le panier complet (plus diversifié, moin
 5. Robots/EA autorisés.
 ⚠️ Ne pas arbitrer sur le seul critère du swap : une firme sans swap mais peu fiable sur les paiements est un moins bon deal.
 
+## 9. ENQUÊTE FIRMES (2026-07-29) — 🚨 LA RÈGLE DE CONSISTANCE ANNULE LE BÉNÉFICE DU SANS-SWAP
+
+> Simulation complète des DEUX jeux de règles (`mc_firms.mjs`, 20 000 sims chacun).
+> Découverte : le sans-swap ne suffit pas. Il faut aussi l'absence de **règle de consistance**.
+
+### Funded Trading Plus 2-Step Classic — règles réelles
+Sans swap ✅ | cible **7% par phase** | DD max **8% statique** | DD jour **4%** | **RÈGLE DE CONSISTANCE 35%**
+(aucun jour ne peut représenter >35% du profit net total de la phase).
+Réputation : Trustpilot 4.7/5 sur 4 500+ avis ; la firme publie un taux de refus de retrait de 1.74% (fraude/KYC) —
+transparence rare. Points noirs relevés dans les avis 1★ : revue de risque **discrétionnaire** (refus possible pour
+« risque excessif » sans violation de règle) et blocages KYC après réussite.
+
+### Résultats Monte Carlo — jusqu'au compte financé
+| Config | Médiane | ≤6 mois | Frais moyens |
+|---|---|---|---|
+| **FTMO 1.5%** (swaps, PAS de consistance) | **4.7 mois** | **57%** | 1 186€ |
+| FTMO 1.25% | 6.4 mois | 47% | 1 148€ |
+| FT+ 1.5% (sans swap, consistance 35%) | **12.7 mois** | 21% | 1 675€ |
+| FT+ 1.0% (sans swap, consistance 35%) | 12.2 mois | 23% | 775€ |
+| *Contrôle : FT+ 1.5% SANS consistance* | *2.8 mois* | *83%* | *1 134€* |
+
+**Pourquoi la consistance nous tue** : notre stratégie gagne par à-coups. Un +3R à 1.5% de risque = +4.5% en une
+journée, soit **64% d'une cible à 7%** — très au-dessus des 35% autorisés. Il faut alors continuer à trader pour
+« diluer » ce jour, ce qui rallonge massivement et expose au drawdown. Coût mesuré de la règle : **+10 mois**.
+
+⇒ **CONCLUSION INVERSÉE : FTMO (4.7 mois) bat Funded Trading Plus (12.7 mois) malgré les swaps.**
+L'absence de règle de consistance chez FTMO vaut plus que ses swaps.
+
+### Le profil recherché (cahier des charges complet)
+Swap-free **ET** pas de règle de consistance **ET** week-end autorisé (évaluation ET compte financé) **ET** DD ≥8%
+**ET** firme fiable. Combinaison rare. Vérifications faites :
+- **FXIFY** : pas de swap-free ❌ (week-end OK)
+- **FundingPips** : pas de swap-free ❌ ; pas de consistance ✅ mais week-end interdit sur comptes financés depuis
+  le 2026-01-29 ❌ (bloquant)
+- **Velotrade / Blueberry Funded** : annoncés sans consistance — statut swap non vérifié, à instruire
+Si ce profil est trouvé : **~2.8 mois médiane, 83% ≤6 mois**. C'est l'objectif de recherche.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
