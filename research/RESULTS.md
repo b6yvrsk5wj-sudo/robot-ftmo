@@ -193,6 +193,57 @@ entre trend et MR — MR-A devient un pilier, plus un complément.
 Dépôt public (stratégie visible, token en secret : OK) ; expiration possible des démos MT5 inactives ; le cron GitHub de secours
 peut se désactiver après 60 j sans activité (non pertinent : cron-job.org principal + commits fréquents).
 
+## 8. RECHERCHE ANTI-SWAP (2026-07-29) — que faire du problème des frais
+
+> Après le constat de la section 6 (les swaps mangent la moitié de l'edge), recherche systématique.
+> Scripts : `fix_swap.mjs` (élargir les stops, changer de TF), `fix_swap2.mjs` (spécialiser par instrument/sens).
+> ⚠️ Ces chiffres incluent le **triple swap du mercredi** (facteur 1.28) — plus sévères que la section 6.
+
+### Pistes ÉCARTÉES (testées, ne marchent pas)
+- **Élargir les stops** (4x/6x/8x ATR au lieu de 3x) : le ratio notionnel/risque baisse, mais la durée des trades
+  augmente et annule le gain. Net/an : 4.5R (3x) → 5.8R (4x) → −2.1R (6x) → 0.5R (8x). Rien d'exploitable.
+- **Passer le trend en daily** : pire (stops larges mais trades beaucoup plus longs). 25 ans : +0.2R/an net, maxDD 48.7R.
+- **Couper les trades longs** : déjà écarté (section 6), les marathons restent nets positifs en moyenne.
+
+### La vraie structure du coût (par trade, trend 1h, net de swap)
+| Instrument | Swap/trade | Net/an (2 ans) |
+|---|---|---|
+| **XAUUSD** | **0.063R** | **+5.0R** ✅ |
+| US100 | 0.158R | +1.3R |
+| US500 | 0.214R | −3.5R ❌ |
+| US30 | 0.251R | +1.9R |
+
+**L'or coûte 3-4x moins cher** (taux broker plus bas + ATR proportionnellement plus grand). **Les SHORTS indices ont un
+swap ~nul voire positif** (+0.0009%/j). Les LONGS indices sont ce qui saigne.
+
+### Meilleure recombinaison trouvée : **or (2 sens) + shorts indices + MR-A**
+| Config | 2 ans net/an | 25 ans net/an | swap/an (2 ans) |
+|---|---|---|---|
+| ACTUEL (trend tous + MR) | 9.9R | 0.2R | **−16.9R** |
+| **or + shorts indices + MR** | **11.8R** | 1.5R | **−4.5R** |
+| or seul + MR | 10.3R | 2.2R | −4.5R |
+| MR seule | 5.3R (PF 2.98, maxDD 1.5R) | 1.7R (PF 1.46, maxDD 9.5R) | −1.1R |
+
+→ **La facture de swap baisse de 73% et le rendement net MONTE.** Domine la config actuelle sur les deux fenêtres.
+
+### ⚠️ LE VRAI LEVIER : compte SANS SWAP
+Les swaps coûtent ~63% de l'edge brut. Aucune optimisation de stratégie ne récupère ça. Or des prop firms proposent
+des comptes **swap-free par défaut** (ex. Funded Trading Plus, d'après recherche 2026) ; chez FTMO le swap-free est
+réservé aux comptes islamiques (preuve de religion requise). **Choisir un broker sans swap vaut plus que toute
+optimisation de stratégie.** À instruire avant tout achat de challenge : comparer les firmes sur (swap, règles swing,
+réputation de paiement), pas seulement sur le prix du challenge.
+
+### 🚨 MISE EN GARDE HONNÊTE — l'écart 2 ans vs 25 ans
+Toutes les configs sont **3 à 5x meilleures sur les 2 dernières années que sur 25 ans**. Exemple net de swap :
+MR-A = 5.3R/an récemment mais 1.7R/an en moyenne longue, avec une **période 2015-2020 quasi plate (+1.2R en 6 ans,
+PF 1.04)**. Le trend 1h ne peut PAS être testé sur 25 ans (données 1h limitées à 2 ans) — sa robustesse longue est
+donc INCONNUE. Conséquence : l'estimation "~4.4 mois pour le challenge" repose sur la fenêtre récente et est
+probablement optimiste. Fourchette honnête : entre ~2R/an (scénario long terme) et ~12R/an (scénario récent).
+
+### Vérification à faire
+Les taux de swap utilisés viennent du **broker démo de l'utilisateur** — confirmer qu'ils correspondent bien à FTMO
+(ou à la firme finalement retenue) avant toute décision : ces taux pilotent toute l'analyse.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
