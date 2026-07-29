@@ -267,6 +267,24 @@ Le swap coûte **11.3x plus cher que le spread**. Point mort : il faudrait que l
 **12x plus larges** pour annuler le bénéfice. Même à spreads ×10, le sans-swap gagne encore +2.8R/an.
 ⇒ **La crainte des spreads élargis est un non-sujet pour cette stratégie.** Le compte sans swap est robustement supérieur.
 
+### Firmes sans swap — recherche du 2026-07-29 (À VÉRIFIER PAR L'UTILISATEUR, conditions changeantes)
+✅ **Confirmé : le démo de l'utilisateur EST un démo FTMO** → les taux relevés sont les VRAIS taux FTMO. Analyse validée.
+
+| Firme | Swap-free | Week-end / swing | Notes |
+|---|---|---|---|
+| **FTMO** (actuel) | ❌ sauf compte islamique (justificatif de religion) | ✅ compte Swing | Établi, paiements reconnus. **Aucune option payante sans swap trouvée.** |
+| **Funded Trading Plus** | ✅ **par défaut et gratuit** (1-Step Express, 2-Step Classic) depuis fév. 2026 | ✅ sur ces 2 formules (❌ sur Instant : clôture vendredi 16h30) | Split 80%, EA autorisés, grid & copy interdits. ~19.5M$ payés annoncés. |
+| **FundedNext** | ✅ add-on payant **+10%** du prix du challenge | à vérifier | L'add-on 10% que certaines sources attribuent à tort à FTMO est en réalité de FundedNext. |
+| FundedFast / Goat Funded / Lux / Maven | ✅ annoncé | ✅ annoncé | Non instruits en détail — à vérifier si présélectionnés. |
+
+⚠️ **Erreur de source rencontrée** : plusieurs articles affirment que « FTMO propose le swap-free pour +10% ». Vérification
+faite : cette offre est celle de **FundedNext**, pas de FTMO. Ne pas acheter sur cette base sans confirmation directe.
+
+**Valeur de l'enjeu** : le swap coûte 13.58R/an = **~13 580$/an sur un 100k à 1% de risque**. Même un surcoût de 10%
+sur le prix du challenge (~54€) serait dérisoire face à ça. Durée estimée jusqu'au financement à 1.5% de risque :
+**~10.5 mois avec swaps** (config spécialisée) contre **~4.5 mois sans swap** (panier complet). Le sans-swap divise
+le délai par deux ET permet de garder le panier complet (plus diversifié, moins de dépendance à l'or).
+
 ### Critères de due diligence pour choisir une firme (à instruire, décision utilisateur)
 1. Swap : réellement zéro sur indices ET or, sans « frais d'administration » de substitution.
 2. Règles swing : positions autorisées la nuit ET le week-end (bloquant, cf. section 7).
