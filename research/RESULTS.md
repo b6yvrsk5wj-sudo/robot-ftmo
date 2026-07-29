@@ -251,9 +251,29 @@ PF 1.04)**. Le trend 1h ne peut PAS être testé sur 25 ans (données 1h limité
 donc INCONNUE. Conséquence : l'estimation "~4.4 mois pour le challenge" repose sur la fenêtre récente et est
 probablement optimiste. Fourchette honnête : entre ~2R/an (scénario long terme) et ~12R/an (scénario récent).
 
-### Vérification à faire
-Les taux de swap utilisés viennent du **broker démo de l'utilisateur** — confirmer qu'ils correspondent bien à FTMO
-(ou à la firme finalement retenue) avant toute décision : ces taux pilotent toute l'analyse.
+### Vérification faite (2026-07-29) — et le chiffre qui tranche
+**Recherche FTMO** : FTMO facture bien des swaps, qualifiés de « substantiels » sur US30/US500, et **ses taux diffèrent
+de ceux des autres brokers pour le même CFD**. Les taux ne sont lisibles que dans la spécification de contrat de la
+plateforme. ⇒ **Les taux relevés par l'utilisateur viennent de SON démo, qui n'est peut-être pas FTMO. À confirmer
+(serveur MT5) avant toute décision.**
+
+**Objection « le sans-swap se rattrape sur les spreads » — quantifiée (`spread_vs_swap.mjs`) :**
+| Coût sur 2 ans | Total | Par an |
+|---|---|---|
+| Spread | 2.4R | 1.20R |
+| **Swap** | **27.2R** | **13.58R** |
+
+Le swap coûte **11.3x plus cher que le spread**. Point mort : il faudrait que le compte sans swap ait des spreads
+**12x plus larges** pour annuler le bénéfice. Même à spreads ×10, le sans-swap gagne encore +2.8R/an.
+⇒ **La crainte des spreads élargis est un non-sujet pour cette stratégie.** Le compte sans swap est robustement supérieur.
+
+### Critères de due diligence pour choisir une firme (à instruire, décision utilisateur)
+1. Swap : réellement zéro sur indices ET or, sans « frais d'administration » de substitution.
+2. Règles swing : positions autorisées la nuit ET le week-end (bloquant, cf. section 7).
+3. Réputation de paiement : historique de payouts vérifiable, ancienneté de la firme.
+4. Coût total 12 mois (frais de challenge + resets + éventuels frais plateforme/payout), pas seulement le prix affiché.
+5. Robots/EA autorisés.
+⚠️ Ne pas arbitrer sur le seul critère du swap : une firme sans swap mais peu fiable sur les paiements est un moins bon deal.
 
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
