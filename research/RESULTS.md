@@ -226,6 +226,17 @@ swap ~nul voire positif** (+0.0009%/j). Les LONGS indices sont ce qui saigne.
 
 → **La facture de swap baisse de 73% et le rendement net MONTE.** Domine la config actuelle sur les deux fenêtres.
 
+### Piste "cull des zombies" — ÉCARTÉE après autopsie (`fix_swap3.mjs`)
+Idée : fermer les trades encore plats après N jours (≠ couper les gagnants). Sur 2 ans ça semblait excellent
+(net/an 4.5R → 10-12.8R). **Mais l'autopsie tue l'idée** :
+1. **Le swap ne baisse quasiment pas** : −15.9R/an → −14.9R/an (−7% seulement). Les trades culés étaient déjà courts ;
+   ce ne sont pas eux qui coûtent. Donc le "gain" ne vient PAS d'une économie de frais.
+2. **Le brut MONTE** (20.4 → 26.1R/an) et le nombre de trades explose (231 → 275-360) : le vrai effet est
+   « libérer l'instrument pour re-rentrer plus souvent », pas « payer moins de swap ». C'est un autre mécanisme,
+   fortement dépendant de la période.
+3. **Aucune confirmation hors échantillon** : sur 25 ans, TOUTES les variantes de cull restent négatives (−0.5 à −1.4R/an).
+Même schéma que le filtre multi-timeframe (section 2) : beau sur la fenêtre récente, invalidable ailleurs. **Rejeté.**
+
 ### ⚠️ LE VRAI LEVIER : compte SANS SWAP
 Les swaps coûtent ~63% de l'edge brut. Aucune optimisation de stratégie ne récupère ça. Or des prop firms proposent
 des comptes **swap-free par défaut** (ex. Funded Trading Plus, d'après recherche 2026) ; chez FTMO le swap-free est
