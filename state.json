@@ -47,14 +47,15 @@
     "openedAt": "2026-07-29T14:30:59.245Z"
   },
   "MR_US100": {
-    "openTrade": true,
+    "openTrade": false,
     "dir": 1,
     "entry": 28039.2109375,
     "entryT": 1785159000000,
     "riskDist": 1792.987868634436,
     "sl": 26246.223068865565,
     "lastSignalBar": 1785159000000,
-    "lastC": 27192.310546875,
-    "openedAt": "2026-07-28T13:30:58.719Z"
+    "lastC": 28106.345703125,
+    "openedAt": "2026-07-28T13:30:58.719Z",
+    "outcome": "EXIT"
   }
 }
