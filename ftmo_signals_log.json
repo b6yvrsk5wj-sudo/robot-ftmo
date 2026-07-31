@@ -247,5 +247,13 @@
     "outcome": "EXIT",
     "exitPx": 28106.345703125,
     "resultR": 0.04
+  },
+  {
+    "time": "2026-07-31T13:31:05.561Z",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "outcome": "SL",
+    "exitPx": 7457.220781796359,
+    "resultR": -1
   }
 ]
