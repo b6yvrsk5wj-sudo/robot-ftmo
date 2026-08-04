@@ -255,5 +255,13 @@
     "outcome": "SL",
     "exitPx": 7457.220781796359,
     "resultR": -1
+  },
+  {
+    "time": "2026-08-04T13:30:58.508Z",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "outcome": "TP",
+    "exitPx": 53462.312733738116,
+    "resultR": 3
   }
 ]
