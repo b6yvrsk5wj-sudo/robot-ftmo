@@ -393,6 +393,49 @@ Positions ouvertes : 2 MR (US100, US500), latent −306$. **Swap total payé dep
 
 ### ⇒ DÉCISION : GO sur les critères. Reste à trancher la firme (section 10) avant tout achat.
 
+## 12. 📖 RÈGLES RÉELLES FT+ 1-STEP EXPRESS (lues sur help.fundedtradingplus.com, 2026-08-24)
+
+⚠️ **CORRECTION D'UNE ERREUR DE LA SECTION 10** : j'y avais simulé un DD de **8% statique**. La documentation
+officielle dit **6% RELATIF (trailing)**. Le « 8% statique » venait d'un article tiers, pas de la source. Corrigé.
+
+### Ce que dit la doc officielle
+| Règle | Valeur |
+|---|---|
+| Cible | 10% simulé, **une seule phase** |
+| Perte max | **6% relatif — TRAILING sur le plus-haut du solde**, plafonné au solde initial (une fois +6% atteint, le plancher se verrouille au capital de départ) |
+| Perte journalière | 4% |
+| Swap | ✅ **Sans swap confirmé** sur 1-Step Express, 2-Step Classic et Instant (depuis fév. 2026) |
+| Week-end / overnight | ✅ autorisé |
+| Stop loss obligatoire | ❌ non |
+| Limite de temps | ❌ aucune, mais **1 trade minimum tous les 30 jours** sinon compte cassé |
+| Split | 80%, retrait dès qu'on est en profit, minimum 50$, puis tous les 7 jours |
+| Consistance | **non mentionnée pour le 1-Step Express** (le 2-Step Classic a 35% ; « stade financé 50% » évoqué sans préciser les programmes concernés) |
+
+### Simulations corrigées (`mc_ft_vraies_regles.mjs`)
+| Config | Médiane | 90e pct | ≤6 mois | Frais moyens |
+|---|---|---|---|---|
+| FTMO 1.5% (10%+5%, DD 10% statique, swaps) | 5.1 mois | 14.4 | 56% | 1 055€ |
+| **FT+ 1-Step 1.0%** (vraies règles) | **2.7 mois** | 5.7 | **93%** | 1 108€ |
+| **FT+ 1-Step 1.25%** | **2.0 mois** | 5.4 | **94%** | 1 279€ |
+| *(mon ancienne simu erronée à 8% statique, 1.25%)* | *2.3 mois* | *5.5* | *92%* | *766€* |
+
+**Effet du trailing** : médiane meilleure mais **frais ~2x plus élevés** (1 108€ ≈ 1.85 tentative). Le trailing crée un
+profil « ça passe vite ou ça casse vite ». FT+ reste ~2x plus rapide que FTMO pour un coût comparable.
+
+### 🚨 Le vrai risque : le drawdown historique dépasse la limite à TOUT niveau de risque
+maxDD historique net de swap = **14.6R**. À 0.5% de risque → 7.3% ; à 1% → 14.6% ; à 1.5% → 21.9%.
+**Tous dépassent les 6%.** Ça ne marche que parce qu'on atteint souvent +10% AVANT de subir le gros drawdown —
+c'est une course. D'où le taux d'échec (~1 tentative perdue en moyenne) déjà intégré aux frais ci-dessus.
+
+### ❓ 4 POINTS NON RÉSOLUS — à demander à support@fundedtradingplus.com AVANT d'acheter
+1. **Sans-swap : quels instruments ?** La page ne liste PAS les instruments. Confirmer indices ET or (XAUUSD).
+2. **Symbol Loss Limit** : règle par instrument, % « déterminé par votre programme », non publié pour le 1-Step
+   Express, et son dépassement = **hard breach** (compte terminé). On trade l'or intensivement → risque réel. Exiger le %.
+3. **Compte financé + retraits** : la doc dit que le plancher se verrouille au solde initial et que **les retraits ne
+   réduisent pas le high water mark**. Si on retire les profits pour revenir vers 100k alors que le plancher est à 100k,
+   la moindre perte casse le compte. **Faire préciser le fonctionnement exact du plancher après un retrait.**
+4. **Consistance 50% au stade financé** : s'applique-t-elle aux comptes issus du 1-Step Express ?
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
