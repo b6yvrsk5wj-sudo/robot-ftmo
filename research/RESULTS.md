@@ -362,6 +362,37 @@ Sans swap ✅, week-end ✅, pas de consistance pendant le challenge ✅ — **M
 4. Fiabilité : Trustpilot 4.7/5 sur 4 500+ avis, 1.74% de refus publiés ; points noirs = revue de risque discrétionnaire, KYC.
 5. Confirmer que le sans-swap couvre bien **indices ET or**.
 
+## 11. ✅ BILAN FORWARD-TEST — CRITÈRES GO ATTEINTS (2026-08-24)
+
+**Durée 9.1 semaines | 21 trades clôturés | résultat NET +3 537$ = +3.54% du compte 100k à 1% de risque.**
+
+| Critère GO (fixé à froid le 2026-07-07) | Seuil | Réel | Verdict |
+|---|---|---|---|
+| Durée | ≥8 semaines | 9.1 | ✅ |
+| Trades clôturés | ≥20 | 21 | ✅ |
+| Taux de réussite trend | 25-45% | **33%** (6/18) | ✅ |
+| Incidents techniques | 0 | 0 (robot en ligne en continu) | ✅ |
+
+### Détail par stratégie (clôturé, swaps réels inclus)
+| | Trades | Réussite | Brut | Swap | **NET** |
+|---|---|---|---|---|---|
+| Trend 1h | 18 | 33% | +6 000$ | −2 604$ | **+3 396$** |
+| MR-A | 3 | 67% | +220$ | −79$ | **+141$** |
+| **Total** | **21** | — | **+6 220$** | **−2 683$** | **+3 537$** |
+
+Positions ouvertes : 2 MR (US100, US500), latent −306$. **Swap total payé depuis le début : 2 775$.**
+
+### Lectures importantes
+- **Rythme NET observé : 1.69R/mois** contre ~1.25R/mois attendu au backtest ⇒ le système fait *mieux* que prévu.
+  ⚠️ Août a été exceptionnel (+8.88R brut sur le mois) — ne pas extrapoler, 18 trades restent un petit échantillon.
+- **Le taux de réussite du trend (33%) colle à la théorie (30.5%)** — le moteur se comporte comme conçu.
+- **Les swaps ont coûté 2 775$ = 44% du profit brut.** L'analyse de la section 6 est confirmée en conditions réelles.
+- **Les marathons restent gagnants** : l'US30 tenu 43 jours a payé 1 080$ de swap et rapporté **+1 920$ net**.
+  Confirme qu'il ne faut pas couper les trades longs.
+- Le trade MR à +40$ (30/07) reste hors distribution du backtest, mais les 3 trades MR ne permettent aucune conclusion.
+
+### ⇒ DÉCISION : GO sur les critères. Reste à trancher la firme (section 10) avant tout achat.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
