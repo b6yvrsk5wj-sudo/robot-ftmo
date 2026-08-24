@@ -392,5 +392,13 @@
     "outcome": "EXIT",
     "exitPx": 53277.01171875,
     "resultR": -0.12
+  },
+  {
+    "time": "2026-08-24T02:31:04.228Z",
+    "instrument": "XAUUSD",
+    "event": "CLOSE",
+    "outcome": "TP",
+    "exitPx": 4702.691883570791,
+    "resultR": 3
   }
 ]
