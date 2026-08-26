@@ -49,15 +49,16 @@
     "outcome": "SL"
   },
   "MR_US100": {
-    "openTrade": true,
+    "openTrade": false,
     "dir": 1,
     "entry": 29426.01953125,
     "entryT": 1787146200000,
     "riskDist": 1485.6924289162985,
     "sl": 27940.3271023337,
     "lastSignalBar": 1787146200000,
-    "lastC": 29209.23046875,
-    "openedAt": "2026-08-20T18:15:42.488Z"
+    "lastC": 29224.521484375,
+    "openedAt": "2026-08-20T18:15:42.488Z",
+    "outcome": "EXIT"
   },
   "MR_US30": {
     "openTrade": false,
