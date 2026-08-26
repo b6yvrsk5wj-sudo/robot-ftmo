@@ -436,6 +436,37 @@ c'est une course. D'où le taux d'échec (~1 tentative perdue en moyenne) déjà
    la moindre perte casse le compte. **Faire préciser le fonctionnement exact du plancher après un retrait.**
 4. **Consistance 50% au stade financé** : s'applique-t-elle aux comptes issus du 1-Step Express ?
 
+## 13. 💶 PRIX RÉELS ET TROISIÈME OPTION (2026-08-24)
+
+**Découverte : FTMO propose AUSSI un challenge 1-STEP** (une seule phase, cible 10%) — on ne raisonnait que sur le 2-Step.
+
+| Offre | Prix 100k | Phases | DD max | DD jour | Swap | Frais remboursés |
+|---|---|---|---|---|---|---|
+| FTMO 2-Step | **540€** | 10% + 5% | 10% statique | 5% | ❌ | ✅ au 1er payout |
+| FTMO 1-Step | **499€** | 10% | 10% statique | 5% | ❌ | ❌ non |
+| FT+ 1-Step Express | **549$** | 10% | 6% **trailing** | 4% | ✅ | ❓ à confirmer |
+
+FT+ : levier 1:30 (non contraignant pour nous), **pas de règle de consistance**, split **80% → 90% à +20% de profit
+cumulé → 100% à +30%**, retraits dès le 1er jour puis tous les 7 jours.
+
+### Simulations avec vrais prix et vraies règles (`mc_1step_vs_1step.mjs`)
+| Offre | Médiane | ≤6 mois | Coût net moyen |
+|---|---|---|---|
+| FTMO 2-Step 1.25% | 6.8 mois | 46% | **491€** |
+| FTMO 1-Step 1.25% | 3.0 mois | 79% | 678€ |
+| **FT+ 1-Step 1.25%** | **2.0 mois** | **95%** | 1 066€ |
+| FTMO 2-Step 1.5% | 5.1 mois | 56% | 518€ |
+| FTMO 1-Step 1.5% | 2.4 mois | 93% | 698€ |
+| **FT+ 1-Step 1.5%** | **1.6 mois** | **99%** | 1 050€ |
+
+**Arbitrage** : FT+ est le plus rapide et le plus sûr, mais ~350-400€ plus cher en coût attendu (le DD 6% trailing
+provoque plus d'échecs). FTMO 1-Step est un excellent intermédiaire. FTMO 2-Step est le moins cher grâce au
+remboursement, mais 2-3x plus lent.
+
+⚠️ **Mais l'arbitrage réel ne se joue pas là** : le sans-swap vaut ~13 580$/an **sur le compte financé**
+(section 6). Un surcoût unique de 400€ au challenge est négligeable face à ça. Le challenge dure 2 mois,
+le compte financé dure des années.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
