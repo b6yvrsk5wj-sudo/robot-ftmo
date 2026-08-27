@@ -467,6 +467,35 @@ remboursement, mais 2-3x plus lent.
 (section 6). Un surcoût unique de 400€ au challenge est négligeable face à ça. Le challenge dure 2 mois,
 le compte financé dure des années.
 
+## 14. 🎯 L'INTUITION DE L'UTILISATEUR VALIDÉE — le 6% trailing annule l'avantage du sans-swap
+
+> Question posée par l'utilisateur : « même si je passe le test je serai toujours à 6%, donc il faudra descendre
+> sous 1% de risque, et ça revient au même qu'un FTMO à 10% niveau rentabilité ? »
+> **Réponse : oui — et en scénario pessimiste, c'est même PIRE.** (`compte_finance.mjs`)
+
+Simulation : 12 mois de compte financé, **avec retraits mensuels** (le cas réaliste), split 80%.
+
+| Offre | Risque optimal | Survie 12 mois | **Espérance de revenu/an** |
+|---|---|---|---|
+| **FT+ pessimiste** (plancher NON recalé après retrait) | 0.20% | 100% | **4.7% du compte** |
+| **FT+ optimiste** (plancher recalé après retrait) | 0.50% | 100% | **11.8% du compte** |
+| **FTMO** (10% statique, avec swaps) | 0.70% | 95% | **9.7% du compte** |
+
+**Mécanisme** : le sans-swap double le rendement brut, MAIS le plancher à 6% force un risque ~3x plus faible
+(0.2-0.5% contre 0.7%). Les deux effets se compensent presque exactement. À 0.5% de risque chez FT+ en scénario
+pessimiste, la survie tombe à **0%** sur 12 mois ; à 0.7%, 0% également.
+
+### ⚠️ CORRECTION D'UN BIAIS DE MES ANALYSES PRÉCÉDENTES
+J'avais chiffré le sans-swap à « ~13 580$/an d'économies » (section 6) **à risque constant**. C'était trompeur :
+un plancher plus serré interdit de tenir le même risque. Comparaison correcte = **espérance à risque optimal
+pour chaque offre**, et là l'écart tombe à ~20% en faveur de FT+ (11.8% vs 9.7%) — et s'inverse en défaveur
+de FT+ (4.7% vs 9.7%) si la lecture pessimiste du plancher est la bonne.
+
+### ⇒ TOUTE LA DÉCISION TIENT À LA QUESTION 3 DU MAIL
+- Plancher recalé après retrait → FT+ (11.8%/an) devance FTMO (9.7%/an), mais modestement.
+- Plancher non recalé → **FTMO gagne largement** (9.7% contre 4.7%) et FT+ devient inadapté à cette stratégie.
+Aucune autre question ne pèse autant. Sans réponse écrite sur ce point, ne pas acheter FT+.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
