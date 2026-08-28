@@ -496,6 +496,47 @@ de FT+ (4.7% vs 9.7%) si la lecture pessimiste du plancher est la bonne.
 - Plancher non recalé → **FTMO gagne largement** (9.7% contre 4.7%) et FT+ devient inadapté à cette stratégie.
 Aucune autre question ne pèse autant. Sans réponse écrite sur ce point, ne pas acheter FT+.
 
+## 15. ✉️ RÉPONSE OFFICIELLE DU SUPPORT FT+ (reçue 2026-09) — et décision finale
+
+| Question | Réponse | Verdict |
+|---|---|---|
+| 1. Sans swap | « swap-free across all available platforms », overnight et week-end autorisés | ✅ |
+| 2. Symbol Loss Limit | **« There is no Symbol Loss Limit for the 1-Step Express »** | ✅ risque éliminé |
+| 3. Plancher après retrait | **Scénario PESSIMISTE CONFIRMÉ PAR ÉCRIT** : « balance $101,000, floor remains at $100,000, a further $1,000 loss would breach » | ❌ |
+| 4. Consistance | Aucune règle de consistance sur le 1-Step Express | ✅ |
+| 5. Trading automatisé | Réponse évasive (renvoi vers la politique) — **non confirmé explicitement** | ⚠️ |
+| 6. Remboursement | **Pas de remboursement** des frais au 1er payout | ❌ |
+
+### 🛡️ LA PARADE : garder un coussin (ne pas tout retirer) — ça marche (`ftplus_coussin.mjs`)
+Le plancher figé ne tue le compte que si on retire jusqu'à lui. En ne retirant que ce qui dépasse un coussin :
+
+| Coussin gardé | Risque | Survie 12 mois | Espérance/an |
+|---|---|---|---|
+| 0% (tout retirer) | 0.5% | **0%** ☠️ | 0% |
+| 4% | 0.5% | 57% | 6.2% |
+| **6%** | **0.5%** | **100%** | **11.0%** |
+| 6% | 0.7% | 35% | 7.1% |
+
+**Optimum FT+ : 0.5% de risque + coussin de 6% → 100% de survie, 11.0%/an.**
+**Optimum FTMO : 0.7% de risque → 95% de survie, 9.7%/an.**
+
+### ⚠️ DÉCOUVERTE PARALLÈLE : FTMO 1-Step n'a PAS d'option Swing
+Le compte financé issu d'un 1-Step FTMO est de type Standard ⇒ **fermeture obligatoire avant le week-end**,
+incompatible avec notre stratégie. Chez FTMO, la seule voie viable est donc le **2-Step Swing à 540€** (5.1 mois
+de médiane), pas le 1-Step à 499€ (2.4 mois) qu'on envisageait.
+
+### ⇒ COMPARAISON FINALE
+| | FT+ 1-Step Express | FTMO 2-Step Swing |
+|---|---|---|
+| Prix | 384$ (promo) — non remboursé | 540€ — **remboursé au 1er payout** |
+| Temps jusqu'au financement | **2.0 mois** (95% ≤6 mois) | 5.1 mois (56%) |
+| Revenu compte financé | **11.0%/an** (0.5% risque + coussin 6%) | 9.7%/an (0.7% risque) |
+| Robustesse des règles | 6% trailing, discipline du coussin obligatoire | 10% statique, plus simple |
+| Contrepartie | Firme plus jeune, revue de risque discrétionnaire | Firme établie, historique long |
+
+**FT+ gagne sur les chiffres (2.5x plus rapide, +13% de revenu), FTMO gagne sur la robustesse et la simplicité.**
+Reste à lever le point 5 (trading automatisé) avant achat.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
