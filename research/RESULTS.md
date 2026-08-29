@@ -537,6 +537,50 @@ de médiane), pas le 1-Step à 499€ (2.4 mois) qu'on envisageait.
 **FT+ gagne sur les chiffres (2.5x plus rapide, +13% de revenu), FTMO gagne sur la robustesse et la simplicité.**
 Reste à lever le point 5 (trading automatisé) avant achat.
 
+## 16. 🔍 AUDIT FINAL AVANT PASSAGE EN RÉEL (2026-08-29)
+
+### A. État du forward-test — 9.7 semaines
+| | Trades | Réussite | Total |
+|---|---|---|---|
+| Trend | 21 | **29%** (théorie 30.5%) ✅ | +3.00R |
+| MR | 5 | 40% | +0.01R |
+| **Total** | **26** | — | **+3.01R** |
+Le trend reste parfaitement calibré. **MR sous-performe** (5 trades, +0.01R).
+
+### B. ⚠️ RECALIBRAGE DE MES PROPRES CHIFFRES SUR MR
+Je citais « MR = 0.226R/trade, 82.7% de réussite ». C'était la fenêtre de **2 ans**, exceptionnellement favorable.
+Sur **25 ans : 601 trades, 74% de réussite, +0.126R/trade** — soit **presque 2x moins**. Les 5 trades live
+(+0.002R/trade) sont sous cette moyenne mais dans le bruit pour un si petit échantillon.
+
+### C. ✅ AMÉLIORATION VALIDÉE : supprimer la sortie « close > SMA5 » de MR
+Répartition des sorties (25 ans) : RSI2>65 = 72% des sorties à **+0.30R** ; close>SMA5 = 18% à **+0.10R** seulement.
+En supprimant cette sortie faible :
+| | 25 ans | Sous-périodes | Par instrument |
+|---|---|---|---|
+| Actuel | +67.4R, PF 1.82 | — | — |
+| **Sans close>SMA5** | **+72.1R (+7%)**, PF 1.83 | meilleur sur 2/4, égal sur 2/4 | **meilleur sur les 3** |
+Amélioration modeste mais robuste, et c'est une **simplification** (on retire une condition), pas un ajout de paramètre. ✅ À retenir.
+
+### D. 🎯 RISQUE ET CAP — LA DÉCOUVERTE STRUCTURELLE
+**Contrainte dure** : limite journalière FT+ = 4%. Si toutes les positions sautent le même jour :
+`cap × risque` doit rester < 4%. Donc **cap 3 ⇒ 1.25% maximum** ; à 1.5% avec cap 3, une journée noire = breach.
+
+Mais **baisser le cap à 2 domine sur tous les critères** (moins de positions = meilleurs signaux : PF 1.48 vs 1.35) :
+| Config | Pire jour | Réussite 1re tentative | Médiane | Coût moyen |
+|---|---|---|---|---|
+| cap 3 @ 1.0% | 3.00% ✅ | 44% | 2.7 mois | 743$ |
+| cap 3 @ 1.25% | 3.75% ✅ | 40% | 2.0 mois | 865$ |
+| cap 2 @ 1.5% | 3.00% ✅ | 50% | 1.9 mois | 683$ |
+| **cap 2 @ 1.75%** | **3.50% ✅** | **51%** | **1.6 mois** | **696$** |
+⇒ **cap 2 @ 1.75% bat cap 3 @ 1.25% sur les trois métriques à la fois.**
+
+### E. 🚨 LE POINT INCONFORTABLE : le compte financé FT+ reste fragile
+Même optimisé (cap 3, coussin 8%, risque 0.5%) : **79% de survie sur 12 mois**, espérance **9.3%/an**.
+FTMO (10% statique, avec swaps, 0.7%) : **95% de survie**, espérance **9.7%/an**.
+⇒ **Les deux firmes donnent le même revenu attendu (~9.5%/an). FTMO est simplement plus robuste.**
+L'avantage réel de FT+ n'est donc PAS la rentabilité — c'est **la vitesse pour être financé** (1.6 vs 5.1 mois).
+Nuance : chez FT+, perdre le compte coûte 384$ et ~1.6 mois pour revenir ; ce n'est pas irréversible.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
