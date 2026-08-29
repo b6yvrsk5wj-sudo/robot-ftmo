@@ -581,6 +581,40 @@ FTMO (10% statique, avec swaps, 0.7%) : **95% de survie**, espérance **9.7%/an*
 L'avantage réel de FT+ n'est donc PAS la rentabilité — c'est **la vitesse pour être financé** (1.6 vs 5.1 mois).
 Nuance : chez FT+, perdre le compte coûte 384$ et ~1.6 mois pour revenir ; ce n'est pas irréversible.
 
+## 17. 💵 LA MÉTRIQUE QUI TRANCHE : LE CASH RÉELLEMENT ENCAISSÉ (2026-08-29)
+
+> Objection de l'utilisateur : « chez FT+ il faut d'abord constituer le coussin, donc même si tout va bien
+> je ne peux rien retirer avant longtemps — c'est donc plus long à encaisser que FTMO. »
+> **Il a raison.** Toutes mes comparaisons précédentes mesuraient la vitesse pour être *financé*, pas pour
+> *toucher de l'argent*. Simulation de bout en bout sur 24 mois (`audit_cash.mjs`), séquences construites à l'identique :
+
+| Offre | Cash net médian / 24 mois | 1er retrait (médiane) | N'encaisse jamais |
+|---|---|---|---|
+| FT+ coussin 4% | 2 921$ | 6.4 mois | 14% |
+| FT+ coussin 6% | 8 070$ | 8.8 mois | 20% |
+| FT+ coussin 8% | 6 540$ | 11.0 mois | 25% |
+| FT+ coussin 8% @0.7% | −384$ | 6.2 mois | **55%** |
+| **FTMO 2-Step @1.25% puis 0.7%** | **8 731$** | **8.5 mois** | **7%** |
+| FTMO 2-Step @1.0% puis 0.7% | 7 337$ | 10.8 mois | 9% |
+
+**⇒ FTMO gagne sur les TROIS critères** : plus de cash (8 731$ contre 8 070$), premier retrait plus tôt
+(8.5 contre 8.8 mois), et surtout **3x moins de risque de ne jamais rien encaisser** (7% contre 20%).
+
+**Mécanisme** : le coussin obligatoire de FT+ immobilise 6-8% de profit avant tout retrait. Sur un compte 100k
+à 0.5% de risque, constituer 8% prend ~7 mois — ce qui annule complètement l'avance prise au challenge
+(1.6 mois contre 5.1). L'avantage « être financé plus vite » était un mirage : ce qui compte, c'est encaisser.
+
+### ⚠️ Correction de méthode (incohérence signalée par l'utilisateur : « pourquoi 8% et plus 6% ? »)
+Mes recommandations de coussin ont bougé (6% → 8%) parce que j'avais **changé la construction de la séquence
+entre deux runs** (cap total appliqué ou non), sans le dire. Corrigé ici : séquences identiques partout.
+Avec la mesure cohérente, **6% bat 8% sur le cash** (8 070$ contre 6 540$).
+
+### ⇒ RECOMMANDATION FINALE INVERSÉE : **FTMO 2-Step Swing**
+Challenge à **1.25%** (cap 3, pire jour 3.75% < 5% de limite FTMO), puis compte financé à **0.7%**, sans coussin
+imposé, retrait dès le premier profit, frais de 540€ **remboursés** au premier payout.
+FT+ conserve un avantage théorique (sans swap) mais ses règles — plancher trailing figé + coussin obligatoire —
+le lui reprennent intégralement pour cette stratégie.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
