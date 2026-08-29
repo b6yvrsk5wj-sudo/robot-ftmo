@@ -655,6 +655,44 @@ seul l'US30 passerait — impossible de faire tourner la stratégie sur ses 4 in
 FTMO à 1% de risque au challenge ne rapporte que 7 360$ mais avec **5% seulement** de risque de repartir bredouille.
 C'est un choix entre espérance et fiabilité, pas entre bon et mauvais.
 
+## 20. 🔁 INTRADAY RE-TESTÉ (2026-08-29) — le rejet initial reposait sur une comparaison biaisée
+
+> L'utilisateur : « c'est pour ça que j'ai toujours voulu qu'on fasse de l'intraday ».
+> **Il a raison sur le principe** : l'intraday avait été écarté AVANT la découverte des swaps, donc comparé
+> brut contre brut. Or l'intraday ne paie **aucun frais de nuit** — le biais était de 51%.
+
+### Résultats (2 ans, 4 instruments, `intraday_v3.mjs`)
+| Config | Trades/an | Réussite | PF | R net/an | maxDD | **Rendement / DD** |
+|---|---|---|---|---|---|---|
+| SWING actuel (swaps réels) | 115 | 31% | 1.08 | **7.2R** | 17.1R | 0.84 |
+| **INTRADAY (clôture le soir, 0 swap)** | 444 | 49.5% | 1.06 | 6.0R | **11.7R** | **1.03** |
+
+**L'intraday rend 83% du swing avec 68% du drawdown** ⇒ meilleur rapport rendement/risque. Robuste sur
+4 semestres sur 5. Variantes testées et écartées : opening range breakout (PF 1.07 mais **100% du profit vient
+de l'or**, 3 instruments sur 4 perdants, maxDD 65.6R ☠️) et mean-reversion intraday RSI4 (PF 0.72).
+
+### Ce que l'intraday débloquerait structurellement
+- **Aucun swap** — le poste qui mange 51% du brut disparaît
+- **Plus besoin du compte Swing** ⇒ le **FTMO 1-Step devient jouable** (split **90%** au lieu de 80%, une seule phase)
+- Toutes les prop firms futures intraday s'ouvrent (Topstep, Apex…), là où elles étaient fermées
+- Zéro risque de gap de week-end
+
+### ⚠️ Les deux réserves
+1. **Charge d'exécution : 37 trades/mois (~1.8 par jour de bourse)** contre 10/mois aujourd'hui.
+   Exécution manuelle difficilement tenable ⇒ imposerait le passage au VPS + exécution automatique.
+2. **🚨 DÉPENDANCE À L'OR — et elle concerne AUSSI le système actuel :**
+
+| Instrument | R intraday | R swing (net swaps) |
+|---|---|---|
+| S&P 500 | −4.4 | −4.1 |
+| Nasdaq | +1.9 | +0.3 |
+| Dow | −3.2 | +0.5 |
+| **Or** | **+17.6** | **+17.6** |
+
+**Sur les 2 dernières années, l'or produit la totalité du profit dans les DEUX versions.** Les indices ne
+rapportent rien net de frais. C'est un constat inconfortable sur le système en production, pas seulement sur
+l'intraday — à creuser avant tout engagement en réel.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
