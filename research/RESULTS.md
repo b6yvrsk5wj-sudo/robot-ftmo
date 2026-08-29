@@ -693,6 +693,53 @@ de l'or**, 3 instruments sur 4 perdants, maxDD 65.6R ☠️) et mean-reversion i
 rapportent rien net de frais. C'est un constat inconfortable sur le système en production, pas seulement sur
 l'intraday — à creuser avant tout engagement en réel.
 
+## 21. 🔬 AUDIT INTRADAY COMPLET (2026-08-29) — toutes les questions re-posées
+
+### A. Balayage des paramètres (`intra_full1.mjs`, 2 ans)
+| Question | Résultat |
+|---|---|
+| Take profit | TP 4R (7.2R/an) > TP 3R (6.1) >> TP 2R (2.1) |
+| Multiple de stop | 3x ATR optimal ; 1.5x et 2x détruisent tout (PF ~1.00) |
+| Filtre de session | ❌ dégrade (2.5R/an contre 6.1) |
+| Sens | shorts seuls : rdt/DD 1.90 ; longs seuls : 0.12 ⚠️ très dépendant de la période |
+| **Panier** | or+Nasdaq **9.9R/an** > or seul 8.8 > 4 instruments 6.1 > **indices seuls −2.7** |
+
+### B. Synthèse comparée
+| Config | Trades/mois | PF | R/an | maxDD | rdt/DD |
+|---|---|---|---|---|---|
+| Intraday 4 instruments TP3R (non optimisé) | 37 | 1.07 | 6.1 | 11.7 | 1.04 |
+| Intraday or+Nasdaq TP4R (optimisé) | 23 | 1.16 | 10.9 | 10.7 | **2.05** |
+| **SWING actuel + MR (swaps réels)** | **10** | 1.16 | **13.0** | 14.6 | 1.78 |
+
+### C. Simulation de challenge — la comparaison des options RÉELLEMENT ouvertes
+Rappel : le swing ne peut PAS utiliser le 1-Step (pas de compte Swing ⇒ clôture forcée le week-end une fois financé).
+L'intraday, lui, y a droit.
+| Option viable | Médiane | ≤6 mois | Coût net | Split |
+|---|---|---|---|---|
+| **SWING sur 2-Step Swing** | **7.9 mois** | **42%** | **344€** | 80% |
+| Intraday or+Nasdaq sur 1-Step | 8.3 mois | 27% | 502€ | 90% |
+| Intraday 4 instruments sur 1-Step | 9.3 mois | 27% | 892€ | 90% |
+
+⇒ **Le swing reste devant** : plus rapide, deux fois plus fiable, moins cher. L'intraday ne gagne que sur le split.
+
+### D. 🚨 LES DEUX RISQUES MAJEURS DE L'INTRADAY
+1. **Impossible à valider au-delà de 2 ans.** Les données horaires n'existent pas avant (limite Yahoo : 730 jours).
+   Le trend-pullback daily et MR-A ont été validés sur **25 ans** ; l'intraday ne peut l'être que sur **2**.
+   Tout réglage choisi ici est ajusté à une fenêtre unique, sans test hors échantillon possible. C'est une
+   différence de nature, pas de degré.
+2. **La version « optimisée » est du surapprentissage assumé** : choisir or+Nasdaq revient à garder les instruments
+   qui ont gagné sur la période testée. La version honnête (4 instruments, non triée) fait 6.1R/an, pas 10.9.
+
+### E. Charge d'exécution
+23 à 37 trades/mois (~1 à 1.8 par jour de bourse) contre 10 aujourd'hui ⇒ exécution manuelle non tenable,
+imposerait le passage préalable au VPS + exécution automatique.
+
+### F. Futures toujours fermés
+Même avec le drawdown intraday réduit (10.7R), le risque max chez Phidias 100K reste ~280$/trade, alors que le
+contrat micro sur l'OR — la principale source de profit — en exige **598$**. Blocage inchangé.
+
+### ⇒ CONCLUSION : l'intraday méritait le re-test, mais **le swing reste le meilleur choix**.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
