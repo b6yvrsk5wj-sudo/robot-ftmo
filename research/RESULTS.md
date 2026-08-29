@@ -615,6 +615,46 @@ imposé, retrait dès le premier profit, frais de 540€ **remboursés** au prem
 FT+ conserve un avantage théorique (sans swap) mais ses règles — plancher trailing figé + coussin obligatoire —
 le lui reprennent intégralement pour cette stratégie.
 
+## 18. 🔬 PISTE FUTURES INVESTIGUÉE PUIS ÉLIMINÉE (2026-08-29)
+
+**Idée** : les futures n'ont PAS de swap overnight (le portage est dans le prix). Nos 4 instruments existent en
+futures (ES/NQ/YM/GC). Une prop firm futures autorisant l'overnight supprimerait le problème des swaps.
+
+**La plupart des firmes futures interdisent l'overnight** (Topstep, Apex, Tradeify liquident à la clôture).
+Exception trouvée : **Phidias Premium** — relevé sur leur site le 2026-08-29 :
+100K à **180$** (code PHIDIAS80, 450$ sans) | **drawdown 3 000$ EOD trailing** | **objectif 6 000$** | 1 jour min
+| overnight + week-end autorisés (évaluation ET compte financé) | payouts tous les 5 jours | split 75%→100%
+| Cash Account Reset 1x | max 14 minis / 140 micros.
+
+### ❌ ÉLIMINÉ POUR UNE RAISON PRATIQUE IMPARABLE : la granularité des contrats
+On ne peut pas acheter une fraction de contrat. Risque **minimum** avec UN SEUL contrat micro, aux distances de
+stop réelles du forward-test :
+| Instrument | Contrat micro | Stop médian | **Risque minimum** |
+|---|---|---|---|
+| US30 | MYM (0.50$/pt) | 574 pts | **287$** |
+| US500 | MES (5$/pt) | 85 pts | **423$** |
+| XAUUSD | MGC (10$/pt) | 60 pts | **598$** |
+| US100 | MNQ (2$/pt) | 579 pts | **1 157$** |
+
+Or le drawdown de 3 000$ impose, pour survivre au pire drawdown historique (11.1R), un risque max de **270$/trade**.
+**Même le contrat le moins cher (287$) dépasse déjà cette limite.** Sur un 150K (drawdown ~4 500$, risque max 405$),
+seul l'US30 passerait — impossible de faire tourner la stratégie sur ses 4 instruments.
+⇒ **La piste futures est structurellement fermée pour cette stratégie.** Dossier clos.
+
+## 19. 📊 COMPARATIF FINAL DES 3 OFFRES — cash encaissé sur 24 mois (`comparatif_v2.mjs`)
+
+| Offre | Cash médian | Cash moyen | 1er retrait | Ne touche **jamais** rien |
+|---|---|---|---|---|
+| Phidias (futures) | — | — | — | **inapplicable** (granularité) |
+| FT+ ch 1.75% / fin 0.5% / coussin 6% | **11 640$** | 8 080$ | 7.3 mois | **30%** |
+| FT+ ch 1.75% / fin 0.7% / coussin 6% | −384$ | 4 253$ | 5.3 mois | 51% |
+| FTMO ch 1.25% / fin 0.7% | 7 360$ | 6 220$ | 8.1 mois | 22% |
+| **FTMO ch 1.0% / fin 0.7%** | **7 360$** | 6 769$ | 11.6 mois | **5%** |
+
+**Arbitrage** : FT+ offre le meilleur médian (11 640$) mais **30% de chance de ne jamais rien encaisser**.
+FTMO à 1% de risque au challenge ne rapporte que 7 360$ mais avec **5% seulement** de risque de repartir bredouille.
+C'est un choix entre espérance et fiabilité, pas entre bon et mauvais.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
