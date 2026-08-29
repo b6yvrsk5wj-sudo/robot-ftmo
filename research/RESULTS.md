@@ -740,6 +740,54 @@ contrat micro sur l'OR — la principale source de profit — en exige **598$**.
 
 ### ⇒ CONCLUSION : l'intraday méritait le re-test, mais **le swing reste le meilleur choix**.
 
+## 22. 🥇 LA CONCENTRATION SUR L'OR — conjoncturelle, pas structurelle (2026-08-29, `audit_or.mjs`)
+
+> Constat inquiétant de la section 20 : sur 2 ans, l'or produit ~100% du profit. Structurel ou régime passager ?
+> Réponse sur 25 ans de daily — la seule fenêtre où on peut trancher.
+
+### A. Sur 25 ans, LES QUATRE instruments sont gagnants
+| Instrument | PF | R total | R/an | maxDD |
+|---|---|---|---|---|
+| S&P 500 | 1.47 | +22.1 | 0.88 | 8.0 |
+| Nasdaq 100 | 1.57 | +28.5 | 1.14 | 6.3 |
+| Dow Jones | 1.46 | +22.8 | 0.91 | 9.1 |
+| Or | **1.97** | **+40.3** | **1.61** | 12.3 |
+
+L'or est le meilleur, mais **aucun n'est perdant**. L'edge n'est pas un edge « or », c'est un edge de suivi de tendance.
+
+### B. 🔄 LE LEADERSHIP TOURNE — c'est le point clé
+R par instrument et par tranche de 5 ans :
+| Instrument | 2001-05 | 2006-10 | 2011-15 | **2016-20** | 2021-26 |
+|---|---|---|---|---|---|
+| S&P 500 | 2.8 | −2.2 | 5.8 | **+10.9** | 4.9 |
+| Nasdaq | 7.9 | 0.6 | 4.4 | **+13.1** | 2.5 |
+| Dow | −3.1 | 4.9 | 5.9 | **+12.2** | 3.0 |
+| **Or** | 10.3 | 6.6 | 7.9 | **−2.7** ❌ | **18.2** |
+
+**Sur 2016-2020, l'or a PERDU de l'argent pendant que les trois indices portaient tout le système.**
+Part de l'or dans le profit total : 58% → 67% → 33% → **−8%** → 64%. Aujourd'hui on est dans une phase « or »,
+exactement comme on était dans une phase « indices » il y a cinq ans.
+
+### C. Diversifier rapporte, concentrer coûte
+| Panier (25 ans) | PF | R/an | maxDD | rdt/DD |
+|---|---|---|---|---|
+| **4 instruments** | 1.61 | **4.55** | 17.6 | 6.46 |
+| Indices seuls | 1.50 | 2.93 | 17.6 | 4.16 |
+| Or + Nasdaq | 1.75 | 2.75 | **7.5** | **9.17** |
+| Or seul | 1.97 | 1.61 | 12.3 | 3.28 |
+
+**Le panier complet produit ~3x plus de R/an que l'or seul.** La diversification n'est pas décorative : c'est elle
+qui a sauvé le système en 2016-2020.
+
+### D. Nuance sur le constat de départ
+Sur données DAILY, ces 2 dernières années, le S&P (+1.95R/an contre 0.79 en moyenne longue) et le Dow (+2.50 contre
+0.77) ont fait **mieux** que leur moyenne historique. La domination écrasante de l'or observée en section 20 était
+propre à la fenêtre **1h sur 2 ans**, pas une vérité générale.
+
+### ⇒ CONCLUSION : garder les 4 instruments. Retirer les indices serait ajuster le système au régime actuel —
+exactement l'erreur qu'on a évitée cinq fois. La concentration observée est un symptôme du marché de 2024-2026,
+pas un défaut de conception.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
