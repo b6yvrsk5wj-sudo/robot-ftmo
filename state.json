@@ -61,27 +61,25 @@
     "outcome": "EXIT"
   },
   "MR_US30": {
-    "openTrade": false,
+    "openTrade": true,
     "dir": 1,
-    "entry": 53459.78125,
-    "entryT": 1786973400000,
-    "riskDist": 1565.7088964270056,
-    "sl": 51894.07235357299,
-    "lastSignalBar": 1786973400000,
-    "lastC": 53277.01171875,
-    "openedAt": "2026-08-17T20:30:58.471Z",
-    "outcome": "EXIT"
+    "entry": 52766.87890625,
+    "entryT": 1788269400000,
+    "riskDist": 1349.9318709116776,
+    "sl": 51416.94703533832,
+    "lastSignalBar": 1788269400000,
+    "lastC": 52766.87890625,
+    "openedAt": "2026-09-01T20:31:03.678Z"
   },
   "MR_US500": {
-    "openTrade": false,
+    "openTrade": true,
     "dir": 1,
-    "entry": 7691.759765625,
-    "entryT": 1787059800000,
-    "riskDist": 214.68462774478775,
-    "sl": 7477.075137880212,
-    "lastSignalBar": 1787059800000,
-    "lastC": 7677.27978515625,
-    "openedAt": "2026-08-18T20:30:53.065Z",
-    "outcome": "EXIT"
+    "entry": 7631.47021484375,
+    "entryT": 1788269400000,
+    "riskDist": 188.4887296608957,
+    "sl": 7442.981485182854,
+    "lastSignalBar": 1788269400000,
+    "lastC": 7631.47021484375,
+    "openedAt": "2026-09-01T20:31:03.329Z"
   }
 }
