@@ -582,5 +582,23 @@
     "outcome": "SL",
     "exitPx": 4555.263583947127,
     "resultR": -1
+  },
+  {
+    "time": "2026-09-03T20:31:08.493Z",
+    "strategy": "MR",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "outcome": "EXIT",
+    "exitPx": 7747.7099609375,
+    "resultR": 0.62
+  },
+  {
+    "time": "2026-09-03T20:31:08.730Z",
+    "strategy": "MR",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "outcome": "EXIT",
+    "exitPx": 53686.109375,
+    "resultR": 0.68
   }
 ]
