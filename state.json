@@ -1,7 +1,7 @@
 {
   "_meta": {
     "date": "2026-09-04",
-    "opened": 1,
+    "opened": 3,
     "lastUpdateId": 809761740,
     "lastHB": "2026-09-03"
   },
@@ -16,15 +16,14 @@
     "openedAt": "2026-09-04T13:01:12.732Z"
   },
   "US30": {
-    "openTrade": false,
+    "openTrade": true,
     "dir": 1,
-    "entry": 53478.828125,
-    "entryT": 1787761800000,
-    "sl": 53147.33040664403,
-    "tp": 54473.3212800679,
-    "lastSignalBar": 1787761800000,
-    "openedAt": "2026-08-26T17:31:12.354Z",
-    "outcome": "SL"
+    "entry": 53426.171875,
+    "entryT": 1788535800000,
+    "sl": 52960.594673060674,
+    "tp": 54822.90348081798,
+    "lastSignalBar": 1788535800000,
+    "openedAt": "2026-09-04T16:31:01.900Z"
   },
   "US100": {
     "openTrade": false,
@@ -38,15 +37,14 @@
     "outcome": "SL"
   },
   "US500": {
-    "openTrade": false,
+    "openTrade": true,
     "dir": 1,
-    "entry": 7714.14990234375,
-    "entryT": 1787837400000,
-    "sl": 7661.614708346501,
-    "tp": 7871.7554843354965,
-    "lastSignalBar": 1787837400000,
-    "openedAt": "2026-08-27T14:31:06.836Z",
-    "outcome": "SL"
+    "entry": 7722.259765625,
+    "entryT": 1788535800000,
+    "sl": 7663.191882469361,
+    "tp": 7899.463415091916,
+    "lastSignalBar": 1788535800000,
+    "openedAt": "2026-09-04T16:31:01.561Z"
   },
   "MR_US100": {
     "openTrade": false,
