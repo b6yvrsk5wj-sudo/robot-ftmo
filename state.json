@@ -16,14 +16,15 @@
     "openedAt": "2026-09-04T13:01:12.732Z"
   },
   "US30": {
-    "openTrade": true,
+    "openTrade": false,
     "dir": 1,
     "entry": 53406.91015625,
     "entryT": 1788550200000,
     "sl": 53009.636747431214,
     "tp": 54598.73038270636,
     "lastSignalBar": 1788550200000,
-    "openedAt": "2026-09-08T13:31:07.658Z"
+    "openedAt": "2026-09-08T13:31:07.658Z",
+    "outcome": "SL"
   },
   "US100": {
     "openTrade": false,
