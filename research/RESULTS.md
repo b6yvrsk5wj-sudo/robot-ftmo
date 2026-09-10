@@ -826,6 +826,48 @@ vient de MR — réel mais petit (1.77R/an à 1% de risque sur 25 ans).
   swap (sections 12-15, ses règles de drawdown le tuent).
 - ⇒ **Le système tel que configuré n'a plus l'edge net qui justifiait un challenge payant.**
 
+## 24. ✅ NOUVELLE STRATÉGIE TROUVÉE : EFFET TOURNANT DE MOIS (2026-09-10)
+
+> Recherche dirigée par la contrainte apprise en 3 mois : **le ratio notionnel/risque décide de tout**.
+> Stop large ⇒ petite position ⇒ peu de swap. On cherche des stratégies ayant la propriété structurelle de MR-A.
+> Tous les candidats testés sur 25 ans, **net des swaps réels dès le départ** (`nouvelles_strats.mjs`).
+
+### Candidats testés
+| Stratégie | Trades/an | Réussite | PF | **R/an net** | maxDD | Notionnel/risque |
+|---|---|---|---|---|---|---|
+| MR-A (référence) | 31 | 68.8% | 1.31 | 1.72 | 9.4 | 31 |
+| **Tournant de mois** | 48 | 55.2% | 1.18 | **1.82** | 17.6 | 29 |
+| Tendance hebdo EMA10/30 | 3 | 33.3% | 1.29 | 0.35 | 11 | 10 |
+| Donchian 20/10 | 35 | 29.4% | 0.64 | **−7.92** ☠️ | 205.9 | 42 |
+
+**Règle : achat à la clôture du dernier jour du mois, sortie 4 jours plus tard, stop 3×ATR.** Effet calendaire
+documenté (flux de fin de mois des fonds). Robustesse : −2.6R / +16.9R / +20.4R / +6.9R sur les 4 sous-périodes
+(négatif seulement sur 2001-2008). Les variantes filtrée (>SMA200) et tenue 6 jours sont moins bonnes.
+
+### Portefeuille MR-A + Tournant de mois (`combo_v2.mjs`)
+| Système (25 ans, net swaps) | Trades | Réussite | PF | **R/an** | maxDD |
+|---|---|---|---|---|---|
+| MR-A seule | 766 | 68.8% | 1.31 | 1.72 | 9.4 |
+| Tournant de mois seul | 1172 | 55.4% | 1.17 | 1.66 | 17.6 |
+| **COMBINÉ** | **1938** | **60.7%** | **1.22** | **3.39** | 17.1 |
+
+**Corrélation mensuelle : 0.20** — vraiment décorrélés. Par sous-période : −0.6 / +36.6 / +20.4 / +28.3
+(3 périodes fortement positives, 1 plate). **Le combiné double le rendement de chaque jambe prise seule.**
+
+### Ce que ça change et ce que ça ne change pas
+✅ **Remplace la jambe trend morte** (PF 1.00 net) par deux jambes qui survivent réellement aux swaps.
+✅ Système entièrement validé sur 25 ans, contrairement à toute variante intraday.
+❌ **Ne règle PAS la vitesse de passage d'un challenge** :
+| Système | Risque | Réussite | Médiane |
+|---|---|---|---|
+| Combiné | 1% | **87%** | 19.3 mois |
+| Combiné | 1.5% | 58% | 7.2 mois |
+| Combiné | 2% | 51% | 4.2 mois |
+| *(système actuel, pour mémoire)* | *1%* | *49%* | *2.4 mois* |
+
+À 3.39R/an, atteindre +10% à 1% de risque demande ~3 ans. Le compromis fiabilité/vitesse reste entier :
+on peut passer presque à coup sûr mais lentement, ou vite mais une fois sur deux.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
