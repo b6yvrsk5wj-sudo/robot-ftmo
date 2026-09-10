@@ -788,6 +788,44 @@ propre à la fenêtre **1h sur 2 ans**, pas une vérité générale.
 exactement l'erreur qu'on a évitée cinq fois. La concentration observée est un symptôme du marché de 2024-2026,
 pas un défaut de conception.
 
+## 23. 🚨 STRATÉGIE DÉDIÉE AU CHALLENGE (2026-09-10) — et une découverte grave
+
+> L'utilisateur : « la stratégie est à revoir, au moins pour passer le compte ». **Le raisonnement est juste** :
+> passer un challenge (atteindre +10% AVANT −10%) n'est pas le même problème d'optimisation que gérer un compte financé.
+
+### A. Objectif unique « +10% avant −10% » (`strat_challenge2.mjs`, net des swaps réels)
+| Système | Risque | Réussite | Médiane |
+|---|---|---|---|
+| Système actuel (trend + MR) | 1% | **49%** | **2.4 mois** |
+| Système actuel | 1.5% | 47% | 1.3 mois |
+| Trend seul | 1% | 47% | 2.3 mois |
+| **MR seule (RSI2<10)** | 1% | **100%** | **57.7 mois** ☠️ |
+| MR seule | 2% | 87% | 19.0 mois |
+| MR élargie (RSI2<20) | 2% | 58% | 11.3 mois |
+
+**MR seule ne rate quasiment jamais un challenge — mais met 5 ans.** Élargir son entrée (RSI2<15 ou <20) augmente
+la fréquence mais dilue l'edge (PF 1.85 → 1.40) : le R/an ne bouge presque pas (2.94 → 3.62 sur 25 ans).
+**Aucun réglage ne donne à la fois la fiabilité de MR et la vitesse du trend.**
+
+### B. 🚨 LA DÉCOUVERTE GRAVE : le trend seul, net des swaps, ne rapporte plus RIEN
+| Système (net des swaps réels) | Trades/an | Réussite | PF | **R/an** | maxDD |
+|---|---|---|---|---|---|
+| **TREND seul (2 ans)** | 103 | 29% | **1.00** | **0.00** | 24.9 |
+| MR seule (25 ans) | 32 | 68.8% | 1.31 | 1.77 | 9.4 |
+| Système actuel (2 ans) | 128 | 38.4% | 1.06 | 5.08 | 19.7 |
+
+**Sur les 2 dernières années, la jambe trend a un profit factor de EXACTEMENT 1.00 une fois les swaps payés.**
+Le forward-test le confirme en direct : trend à −5.00R sur 29 trades, 21% de réussite. L'edge résiduel du système
+vient de MR — réel mais petit (1.77R/an à 1% de risque sur 25 ans).
+
+### C. Implications honnêtes
+- Trend 1h : stops serrés ⇒ notionnel énorme ⇒ les swaps mangent tout son edge (la section 6 mesurait −51% du brut ;
+  sur la fenêtre récente c'est −100%).
+- Trend daily : ne sauve rien (section 8 : −1.5R/an net).
+- Les deux issues pour ressusciter la jambe trend étaient l'intraday (section 21, plus faible) ou un compte sans
+  swap (sections 12-15, ses règles de drawdown le tuent).
+- ⇒ **Le système tel que configuré n'a plus l'edge net qui justifiait un challenge payant.**
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
