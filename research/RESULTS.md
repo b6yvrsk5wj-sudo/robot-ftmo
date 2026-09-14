@@ -868,6 +868,49 @@ documenté (flux de fin de mois des fonds). Robustesse : −2.6R / +16.9R / +20.
 À 3.39R/an, atteindre +10% à 1% de risque demande ~3 ans. Le compromis fiabilité/vitesse reste entier :
 on peut passer presque à coup sûr mais lentement, ou vite mais une fois sur deux.
 
+## 25. 🔬 INTERMARCHÉS + LE TEST DE CONTRÔLE QUI MANQUAIT AU PROJET (2026-09-14)
+
+> L'utilisateur demande plus de rigueur et des familles moins classiques. Deux apports réels en réponse.
+
+### A. Famille INTERMARCHÉS explorée (VIX, DXY, taux 10 ans, crédit HYG — 25 ans de données ajoutées)
+| Stratégie | PF | R total | Verdict |
+|---|---|---|---|
+| Pic de VIX (achat panique sur indices) | 1.21 | +14.7 | ❌ **3 sous-périodes sur 4 négatives**, tout le profit vient de 2021-2026 |
+| Pic de VIX seuil 1.4 | — | −0.8 | ❌ |
+| Crédit HYG (appétit pour le risque) | 1.09 | +9.5 | ❌ 2 sous-périodes négatives, profit concentré sur 2021-2026 |
+| Or piloté dollar+taux | 1.35 | +21.1 | ❌ voir test de contrôle ci-dessous |
+| MR-A + filtre VIX haut | 1.44 | +39.6 | ❌ **dégrade** MR-A non filtrée (1.48 / +46.7) |
+| MR-A + filtre VIX bas | 1.64 | +8.8 | ❌ trop peu de trades, une sous-période négative |
+
+**Aucune stratégie intermarché ne survit.** La famille que les professionnels utilisent le plus n'a rien donné ici.
+
+### B. 🚨 LE TEST DE CONTRÔLE : battre une ENTRÉE AU HASARD
+Découverte de méthode : **la validation par sous-période ne suffit pas.** Une stratégie long-only sur un actif
+qui monte depuis 25 ans peut être positive sur les 4 sous-périodes sans avoir aucun edge. Il faut la comparer
+à une entrée aléatoire de même fréquence et même durée de détention (`controle_or.mjs`, `controle_tout.mjs`).
+
+**« Or piloté dollar+taux » — TUÉE par ce test :**
+| Mode d'entrée sur l'or | Espérance/trade | R total |
+|---|---|---|
+| Signal macro | 0.100R | +21.1 |
+| **Hasard (même fréquence)** | **0.121R** | +37.2 |
+| **Toujours long** | **0.125R** | +44.4 |
+⇒ Le signal fait **moins bien que le hasard**. Tout son « edge » était la hausse de l'or (×16 en 25 ans).
+
+**Les deux stratégies retenues — VALIDÉES par ce test :**
+| Stratégie | Espérance/trade | Hasard (10 graines) | Surperformance | **z** | Verdict |
+|---|---|---|---|---|---|
+| **MR-A** | 0.079R (PF 1.48, +46.7R) | −0.021R (PF 0.91, **−11.2R**) | +0.100R | **3.05** | ✅ edge réel |
+| **Tournant de mois** | 0.034R (PF 1.16, +39.3R) | −0.017R (PF 0.90, **−18.7R**) | +0.051R | **8.10** | ✅ edge réel |
+
+Point important : l'entrée au hasard sur les indices **PERD de l'argent** net de frais (−11R et −19R). La dérive
+haussière ne suffit donc pas à rendre une stratégie rentable une fois spread et swaps payés — ce qui rend la
+surperformance de MR-A et du tournant de mois d'autant plus significative.
+
+### ⇒ Bilan : le portefeuille MR-A + tournant de mois est le seul ensemble du projet à passer
+**(1)** validation sur 25 ans, **(2)** robustesse par sous-période, **(3)** survie aux swaps réels,
+**(4)** décorrélation mutuelle (0.20), **(5)** supériorité statistique sur une entrée au hasard.
+
 ## Prochaines étapes possibles
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
