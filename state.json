@@ -1,7 +1,7 @@
 {
   "_meta": {
     "date": "2026-09-22",
-    "opened": 0,
+    "opened": 1,
     "lastUpdateId": 809761740,
     "lastHB": "2026-09-21"
   },
@@ -16,15 +16,14 @@
     "openedAt": "2026-09-04T13:01:12.732Z"
   },
   "US30": {
-    "openTrade": false,
-    "dir": 1,
-    "entry": 53406.91015625,
-    "entryT": 1788550200000,
-    "sl": 53009.636747431214,
-    "tp": 54598.73038270636,
-    "lastSignalBar": 1788550200000,
-    "openedAt": "2026-09-08T13:31:07.658Z",
-    "outcome": "SL"
+    "openTrade": true,
+    "dir": -1,
+    "entry": 51793.37109375,
+    "entryT": 1790083800000,
+    "sl": 52310.39243265185,
+    "tp": 50242.30707704444,
+    "lastSignalBar": 1790083800000,
+    "openedAt": "2026-09-22T14:31:02.824Z"
   },
   "US100": {
     "openTrade": false,
