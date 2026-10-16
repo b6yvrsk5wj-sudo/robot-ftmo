@@ -38,14 +38,15 @@
     "outcome": "SL"
   },
   "US500": {
-    "openTrade": true,
+    "openTrade": false,
     "dir": 1,
     "entry": 7749.58984375,
     "entryT": 1790947800000,
     "sl": 7661.794250371077,
     "tp": 8012.976623886768,
     "lastSignalBar": 1790947800000,
-    "openedAt": "2026-10-02T14:31:05.259Z"
+    "openedAt": "2026-10-02T14:31:05.259Z",
+    "outcome": "SL"
   },
   "MR_US100": {
     "openTrade": true,
