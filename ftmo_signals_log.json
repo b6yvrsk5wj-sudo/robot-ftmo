@@ -885,5 +885,13 @@
     "outcome": "SL",
     "exitPx": 51967.780985957615,
     "resultR": -1
+  },
+  {
+    "time": "2026-10-16T07:45:42.924Z",
+    "instrument": "XAUUSD",
+    "event": "CLOSE",
+    "outcome": "SL",
+    "exitPx": 4211.182297432613,
+    "resultR": -1
   }
 ]

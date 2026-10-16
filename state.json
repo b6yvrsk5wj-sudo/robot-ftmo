@@ -6,14 +6,15 @@
     "lastHB": "2026-10-15"
   },
   "XAUUSD": {
-    "openTrade": true,
+    "openTrade": false,
     "dir": -1,
     "entry": 4179.39990234375,
     "entryT": 1791954000000,
     "sl": 4211.182297432613,
     "tp": 4084.05271707716,
     "lastSignalBar": 1791954000000,
-    "openedAt": "2026-10-14T06:01:12.139Z"
+    "openedAt": "2026-10-14T06:01:12.139Z",
+    "outcome": "SL"
   },
   "US30": {
     "openTrade": false,
