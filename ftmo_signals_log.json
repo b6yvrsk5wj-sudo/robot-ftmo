@@ -930,5 +930,23 @@
     "outcome": "EXIT",
     "exitPx": 29822.517578125,
     "resultR": -0.11
+  },
+  {
+    "time": "2026-10-22T14:30:57.372Z",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "outcome": "SL",
+    "exitPx": 7655.773205728105,
+    "resultR": -1
+  },
+  {
+    "time": "2026-10-22T13:30:00.000Z",
+    "instrument": "US100",
+    "event": "OPEN",
+    "dir": "SHORT",
+    "entry": 29179.875,
+    "sl": 29711.536642143357,
+    "tp": 27584.890073569928,
+    "risk": 531.6616421433573
   }
 ]
