@@ -1038,5 +1038,13 @@
     "outcome": "TP",
     "exitPx": 3904.1719715728977,
     "resultR": 3
+  },
+  {
+    "time": "2026-10-30T17:01:12.600Z",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "outcome": "SL",
+    "exitPx": 51904.327183875386,
+    "resultR": -1
   }
 ]
