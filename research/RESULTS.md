@@ -915,3 +915,25 @@ surperformance de MR-A et du tournant de mois d'autant plus significative.
 1. ~~Déployer MR-A dans le robot~~ ✅ FAIT le 2026-07-02 (commit 695e47f).
 2. TP 4R sur le trend : écarté (aucun gain sur la config live 1h).
 3. Challenge réel : risque 1%/trade pendant les phases, puis 0.5-0.7% sur le compte financé (voir section 5).
+
+## 26. Stratégies de tendance « du moment » (2026-10-29, `tendances_actuelles.mjs`)
+Supertrend 10/3, cassure 55 j (Turtle), golden cross 50/200, momentum 12 mois, plus haut 52 semaines, MACD+SMA200 — net de swaps.
+**Aucune ne survit** : toutes ≤ 0,8R/an sur 25 ans. En 1h sur 2 ans, golden cross / momentum / MACD affichent +6 à +17R/an,
+mais **sans leurs 3 meilleurs trades** ils tombent à −10,4R / −4,8R / +0,3R, et aucune ne bat le hasard (z max 1,55).
+Forward-test au 29/10 : trend 44 trades **−16 605 $**, MR 11 trades **+1 375 $**, total −15,2 %.
+
+## 27. Le backtest est-il fidèle ? (2026-11-01, `backtest_vs_reel.mjs`)
+Backtest trend 1h rejoué sur exactement la période réelle (22/06 → 28/10) : réel −12,0R brut, backtest −17,1R brut.
+**31 trades réels sur 44 retrouvés dans le backtest, 30 sur 31 avec la même issue.** Le moteur est fidèle ; l'échec vient
+de la stratégie (validée sur 2 ans seulement, swaps oubliés au départ, PF net 1,00 une fois corrigé).
+
+## 28. Chasse aux « pépites » (2026-11-01, `pepites.mjs`)
+13 stratégies populaires (YouTube/TikTok/TradingView/sites de backtests). Daily 25 ans / 1h 2 ans, net, contrôle hasard.
+- **Faux positif démasqué** : Fair Value Gap ICT affichait +36R/an à cause d'un biais d'ordre limite (remplissage au-delà du stop
+  et TP sur la bougie de remplissage). Corrigé : **−33R/an**. Silver Bullet −9,7R/an, EMA 9/15 z=1,16, overnight −14R/an.
+- Solides mais faibles (25 ans) : Turnaround Tuesday 2,8R/an (z 5,5, 4/4 sous-périodes), IBS<0,2 1,9R/an (z 3,7).
+- **Seule piste forte : cassure de la 1re heure (indices)** : +31,7R/an sur 2 ans, 1 289 trades, PF 1,16, z = 4,1, positive sur les
+  3 indices et dans les 2 sens, positive à coûts ×2 (×3 ≈ 0). Réserves : 2 ans seulement, 45R sur ~59R dans un seul semestre,
+  0,046R/trade. Une réplication indépendante (MQL5, 09/2026, CFD 2015-2026, mêmes coûts) de la variante 5 min trouve un edge brut
+  réel mais **nul net de frais**, négatif en 2015-2017. Notre plage 1h (stop plus large) dilue les coûts — non prouvé au-delà de 2 ans.
+⇒ **Déployée en forward-test démo le 2026-11-01 (robot v2), suivi papier automatique dans `orb_log.json`.**

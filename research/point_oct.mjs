@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 const RATES = { US500: { L: -0.0211, S: 0.0003 }, US100: { L: -0.0217, S: 0.0009 }, US30: { L: -0.0218, S: 0.0009 }, XAUUSD: { L: -0.0182, S: -0.0059 } };
 const R_USD = 1000, ACC = 100000;
-const log = JSON.parse(readFileSync(new URL('../ftmo_signals_log.json', import.meta.url)));
+const log = JSON.parse(readFileSync(new URL('./robot_v1_signals_log.json', import.meta.url)));
 const billed = (t0, t1) => { let d = 0; const e = new Date(t1); for (let x = new Date(t0); x < e; x.setUTCDate(x.getUTCDate() + 1)) { const n = new Date(x); n.setUTCDate(n.getUTCDate() + 1); if (n > e) { d += (e - x) / 86400000; break; } d += x.getUTCDay() === 3 ? 3 : 1; } return d; };
 
 const opens = {}; const byStrat = { trend: { g: 0, s: 0, n: 0 }, MR: { g: 0, s: 0, n: 0 } };
