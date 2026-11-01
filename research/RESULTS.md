@@ -937,3 +937,15 @@ de la stratégie (validée sur 2 ans seulement, swaps oubliés au départ, PF ne
   0,046R/trade. Une réplication indépendante (MQL5, 09/2026, CFD 2015-2026, mêmes coûts) de la variante 5 min trouve un edge brut
   réel mais **nul net de frais**, négatif en 2015-2017. Notre plage 1h (stop plus large) dilue les coûts — non prouvé au-delà de 2 ans.
 ⇒ **Déployée en forward-test démo le 2026-11-01 (robot v2), suivi papier automatique dans `orb_log.json`.**
+
+## 29. Cassure 1re heure face aux règles FTMO (2026-11-01, `orb_propfirm.mjs`)
+2 ans, 1 289 trades, 2,8 trades/jour. Pire jour −3,12R, drawdown max 26,9R (séquence journalière).
+| Risque | Rendement/an | DD max | Pire jour | Challenge 2-Step (10 % puis 5 %) | Si avantage ÷2 | Si avantage nul |
+|---|---|---|---|---|---|---|
+| 0,35 % | 10,4 % | 9,4 % | −1,1 % | 76 % / 10,6 mois | 54 % | 30 % |
+| 0,5 % | 14,8 % | 13,4 % | −1,6 % | 67 % / 6,1 mois | 48 % | 30 % |
+| 1 % | 29,6 % | 26,9 % | −3,1 % | 51 % / 2,0 mois | 39 % | 31 % |
+Règles : intraday (clôture 16h NY = avant le rollover) → **pas de swaps**, compte Standard possible. Règle news FTMO : libre en
+challenge ; sur compte financé Standard, ni ouverture ni clôture 2 min avant/après une news restreinte (ex. FOMC 14h NY dans la
+fenêtre d'entrée) → annuler les ordres ces jours-là ou prendre un compte Swing (exempté). Non testé : spreads FTMO réels à 10h30 NY,
+glissement des ordres stop, écart entre prix CFD FTMO et indice cash Yahoo. Règles spécifiques du 1-Step non vérifiées.
