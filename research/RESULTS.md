@@ -949,3 +949,12 @@ Règles : intraday (clôture 16h NY = avant le rollover) → **pas de swaps**, c
 challenge ; sur compte financé Standard, ni ouverture ni clôture 2 min avant/après une news restreinte (ex. FOMC 14h NY dans la
 fenêtre d'entrée) → annuler les ordres ces jours-là ou prendre un compte Swing (exempté). Non testé : spreads FTMO réels à 10h30 NY,
 glissement des ordres stop, écart entre prix CFD FTMO et indice cash Yahoo. Règles spécifiques du 1-Step non vérifiées.
+
+## 30. Variantes de la cassure 1re heure (2026-11-01, `orb_ameliorations.mjs`)
+Méthode anti-surapprentissage : choix sur l'année 1, validation sur l'année 2 jamais vue. R/trade année 1 → année 2 :
+base (2R) 0,064 → 0,029 | **objectif 1R 0,078 → 0,041 (DD 21,1R vs 26,9R)** | sans objectif 0,083 → 0,035 | 3R 0,067 → 0,032 |
+entrées jusqu'à 12h30 NY 0,062 → 0,034 | plage étroite 0,030 → 0,071 | **plage large 0,097 → −0,016 (meilleure en année 1, ÉCHOUE en année 2)** |
+filtre tendance EMA200 0,005 → −0,047 | stop au milieu −0,20 → −0,27.
+⚠️ L'avantage de la base est divisé par 2 entre l'année 1 et l'année 2. Seul l'objectif 1R bat la base sur les deux années (repéré en
+regardant les deux, donc preuve faible). ⇒ Pas de changement de la stratégie en cours de test ; **le robot suit la variante 1R en
+parallèle sur papier** (`variant: '1R'` dans `orb_log.json`), les alertes restent sur la version 2R.

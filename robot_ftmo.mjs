@@ -49,7 +49,10 @@ if (!state._meta) {
   state._meta = { lastUpdateId: old._meta?.lastUpdateId || 0, started: new Date(now).toISOString() };
 }
 const today = new Date(now).toISOString().slice(0, 10);
-const totals = () => { const c = log.filter(e => e.event === 'CLOSE'); return { n: c.length, r: c.reduce((s, e) => s + e.rNet, 0), w: c.filter(e => e.rNet > 0).length }; };
+// variante suivie en parallèle sur papier (section 30) : mêmes entrées, objectif 1R au lieu de 2R
+const TP_R_VARIANT = 1;
+const totals = (v = 'base') => { const c = log.filter(e => e.event === 'CLOSE' && (e.variant || 'base') === v); return { n: c.length, r: c.reduce((s, e) => s + e.rNet, 0), w: c.filter(e => e.rNet > 0).length }; };
+const totTxt = v => { const tt = totals(v); return `${tt.n} trades, ${tt.w} gagnants, ${tt.r >= 0 ? '+' : ''}${tt.r.toFixed(2)}R net (≈ ${(tt.r * RISK_PCT).toFixed(2)} % du compte)`; };
 
 // --- annonce du changement de stratégie (une seule fois) ---
 if (!state._meta.announced) {
@@ -66,8 +69,8 @@ if (TOKEN && CHAT) {
       const m = u.message; if (!m || !m.text || String(m.chat.id) !== String(CHAT)) continue;
       const t = m.text.toLowerCase();
       if (/(status|etat|état|bilan|position)/.test(t)) {
-        const tt = totals(), act = INSTR.map(([, n, lb]) => { const d = state[n]; return d && d.day === nyDay(now) ? `• ${lb} : ${d.pos ? `${d.pos.dir === 1 ? 'LONG' : 'SHORT'} ouvert @ ${f(d.pos.e)}` : d.done ? `terminé (${d.result})` : 'ordres en attente'}` : `• ${lb} : rien aujourd'hui`; }).join('\n');
-        await tg(`📊 Cassure 1re heure\n\nAujourd'hui :\n${act}\n\nDepuis le début : ${tt.n} trades, ${tt.w} gagnants, ${tt.r >= 0 ? '+' : ''}${tt.r.toFixed(2)}R net (≈ ${(tt.r * RISK_PCT).toFixed(2)} % du compte)`);
+        const act = INSTR.map(([, n, lb]) => { const d = state[n]; return d && d.day === nyDay(now) ? `• ${lb} : ${d.pos ? `${d.pos.dir === 1 ? 'LONG' : 'SHORT'} ouvert @ ${f(d.pos.e)}` : d.done ? `terminé (${d.result})` : 'ordres en attente'}` : `• ${lb} : rien aujourd'hui`; }).join('\n');
+        await tg(`📊 Cassure 1re heure\n\nAujourd'hui :\n${act}\n\nDepuis le début :\n• Objectif 2R (tes alertes) : ${totTxt('base')}\n• Variante objectif 1R (papier) : ${totTxt('1R')}`);
       } else if (/(help|aide|start|commande)/.test(t)) {
         await tg('Commandes :\n- "status" ou "bilan" : trades du jour + bilan depuis le début\n\nLe robot gère tout seul les sorties (stop, objectif 2R, fin de séance).');
       }
@@ -97,33 +100,39 @@ for (const [sym, name, label] of INSTR) {
     const x = b[i], isLast = nyHour(x.t) === 15, closeT = x.t + (isLast ? 1800e3 : 3600e3);
     if (x.t <= d.lastT || now < closeT + 5 * 60e3) continue;
     d.lastT = x.t;
-    if (!d.pos && !d.cancelled) {
+    if (!d.entered && !d.cancelled) {
       if (nyHour(x.t) > LAST_ENTRY_NY_H) d.cancelled = true;
       else if (x.h >= d.hi && x.l <= d.lo) d.cancelled = true; // les 2 côtés dans la même bougie : ambigu, pas de trade
       else if (x.h >= d.hi || x.l <= d.lo) {
         const dir = x.h >= d.hi ? 1 : -1, e = dir === 1 ? Math.max(x.o, d.hi) : Math.min(x.o, d.lo);
         const sl = dir === 1 ? d.lo : d.hi, tp = dir === 1 ? d.hi + TP_R * d.r : d.lo - TP_R * d.r;
         d.pos = { dir, e, sl, tp, t: x.t, risk: Math.abs(e - sl) };
+        d.pos1 = { ...d.pos, tp: dir === 1 ? d.hi + TP_R_VARIANT * d.r : d.lo - TP_R_VARIANT * d.r };
+        d.entered = true;
         log.push({ time: new Date(x.t).toISOString(), day, instrument: name, event: 'OPEN', dir: dir === 1 ? 'LONG' : 'SHORT', entry: e, sl, tp });
         await tg(`${dir === 1 ? '🟢' : '🔴'} Déclenché — ${label} : ${dir === 1 ? 'ACHAT' : 'VENTE'} @ ${f(e)}\nAnnule l'autre ordre si ce n'est pas fait.`);
       }
       if (d.cancelled && !d.pos) { d.done = true; d.result = 'pas de trade'; break; }
     }
-    if (d.pos) {
-      const p = d.pos, L = p.dir === 1, first = x.t === p.t;
+    // 'pos' = version de base (tes alertes), 'pos1' = variante objectif 1R suivie en silence
+    for (const key of ['pos', 'pos1']) {
+      const p = d[key]; if (!p) continue;
+      const L = p.dir === 1, first = x.t === p.t;
       let exit = null, why = null;
       if (L ? x.l <= p.sl : x.h >= p.sl) { exit = first ? p.sl : (L ? Math.min(x.o, p.sl) : Math.max(x.o, p.sl)); why = 'STOP'; }
       else if (L ? x.h >= p.tp : x.l <= p.tp) { exit = L ? Math.max(x.o, p.tp) : Math.min(x.o, p.tp); why = 'OBJECTIF'; }
       else if (isLast) { exit = x.c; why = 'FIN DE SÉANCE'; }
-      if (exit !== null) {
-        const rG = p.dir * (exit - p.e) / p.risk, rNet = rG - COST_PTS[name] / p.risk;
-        log.push({ time: new Date(closeT).toISOString(), day, instrument: name, event: 'CLOSE', outcome: why, exit, rGross: +rG.toFixed(3), rNet: +rNet.toFixed(3) });
-        d.done = true; d.result = `${why} ${rNet >= 0 ? '+' : ''}${rNet.toFixed(2)}R`; d.pos = null;
+      if (exit === null) continue;
+      const rG = p.dir * (exit - p.e) / p.risk, rNet = rG - COST_PTS[name] / p.risk, res = `${why} ${rNet >= 0 ? '+' : ''}${rNet.toFixed(2)}R`;
+      log.push({ time: new Date(closeT).toISOString(), day, instrument: name, event: 'CLOSE', variant: key === 'pos' ? 'base' : '1R', outcome: why, exit, rGross: +rG.toFixed(3), rNet: +rNet.toFixed(3) });
+      d[key] = null;
+      if (key === 'pos') {
+        d.result = res;
         await tg(`${rNet > 0 ? '✅' : '❌'} ${label} — ${why}\nSortie ${f(exit)} : ${rNet >= 0 ? '+' : ''}${rNet.toFixed(2)}R net (${rNet >= 0 ? '+' : '−'}${f(Math.abs(rNet) * ACCOUNT_SIZE * RISK_PCT / 100)}$)`);
-        break;
-      }
+      } else d.result1 = res;
     }
-    if (isLast && !d.pos) { d.done = true; d.result = d.result || 'pas de trade'; }
+    if (d.entered && !d.pos && !d.pos1) { d.done = true; break; }
+    if (isLast && !d.pos && !d.pos1) { d.done = true; d.result = d.result || 'pas de trade'; }
   }
 }
 
@@ -134,8 +143,8 @@ if (ok === 0) {
 // --- point quotidien (après la clôture US) ---
 if (new Date(now).getUTCHours() >= HEARTBEAT_HOUR_UTC && state._meta.lastHB !== today) {
   state._meta.lastHB = today;
-  const tt = totals(), dayRes = INSTR.map(([, n, lb]) => state[n]?.day === nyDay(now) ? `• ${lb} : ${state[n].result || 'en cours'}` : null).filter(Boolean);
-  await tg(`🤖 Point du jour — cassure 1re heure\n\n${dayRes.length ? dayRes.join('\n') : 'Pas de séance aujourd\'hui.'}\n\nBilan depuis le début : ${tt.n} trades, ${tt.w} gagnants, ${tt.r >= 0 ? '+' : ''}${tt.r.toFixed(2)}R net (≈ ${(tt.r * RISK_PCT).toFixed(2)} % du compte)`);
+  const dayRes = INSTR.map(([, n, lb]) => state[n]?.day === nyDay(now) ? `• ${lb} : ${state[n].result || 'en cours'}${state[n].result1 ? ` (variante 1R : ${state[n].result1})` : ''}` : null).filter(Boolean);
+  await tg(`🤖 Point du jour — cassure 1re heure\n\n${dayRes.length ? dayRes.join('\n') : 'Pas de séance aujourd\'hui.'}\n\nBilan depuis le début :\n• Objectif 2R (tes alertes) : ${totTxt('base')}\n• Variante objectif 1R (papier) : ${totTxt('1R')}`);
 }
 
 writeFileSync(STATE, JSON.stringify(state, null, 2));
