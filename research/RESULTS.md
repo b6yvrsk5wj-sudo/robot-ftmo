@@ -977,3 +977,5 @@ Lecture : résultat positif presque partout, mais **l'information sur la DIRECTI
 Russell 2000, Dow). Hors USA, le gain ne se distingue pas d'une direction au hasard (effet de la structure stop/objectif, pas de la
 cassure). **Le Russell 2000, marché jamais utilisé pour concevoir la règle, confirme l'effet US** (z 3,3-3,6). Point noir général :
 l'avantage s'affaiblit nettement sur la 2e année presque partout (sauf Nasdaq et Nikkei).
+
+⇒ **Russell 2000 ajouté au robot le 2026-11-02 en suivi papier silencieux** (US2000, sans alerte, coût 0,5 pt).

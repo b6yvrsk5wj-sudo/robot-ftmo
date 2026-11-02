@@ -4,8 +4,8 @@
 > - Les stratégies trend 1h et MR-A sont **arrêtées**. Ancien code : `research/robot_v1_trend_mr.mjs` ; ancien état et journal : `research/robot_v1_state.json`, `research/robot_v1_signals_log.json`.
 > - Nouveau robot `robot_ftmo.mjs` : S&P 500, Nasdaq 100, Dow. Plage = 1re bougie 1h de la séance NY (9h30-10h30 NY). Ordre stop d achat au-dessus, de vente en dessous, stop de l autre côté, objectif 2R, entrées jusqu à 15h30 NY, clôture en fin de séance. Risque 0,35 % par trade.
 > - Le robot alerte à 10h30 NY ET suit chaque trade tout seul sur les bougies réelles (frais déduits) : journal `orb_log.json`, état `orb_state.json`. Commande Telegram : `status` / `bilan`.
-> - Le robot suit aussi en silence une variante objectif 1R (`variant: "1R"` dans `orb_log.json`, section 30).
-> - Pourquoi : `research/RESULTS.md` sections 26 à 30. La suite de ce guide décrit l ancien robot (v1).
+> - Le robot suit aussi en silence une variante objectif 1R (`variant: "1R"` dans `orb_log.json`, section 30) et le Russell 2000 (US2000, papier seulement, section 31).
+> - Pourquoi : `research/RESULTS.md` sections 26 à 31. La suite de ce guide décrit l ancien robot (v1).
 
 > Ce document résume TOUT mon robot de trading, pour que je (ou une nouvelle conversation Claude) puisse repartir de là sans rien perdre.
 
