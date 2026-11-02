@@ -979,3 +979,13 @@ cassure). **Le Russell 2000, marché jamais utilisé pour concevoir la règle, c
 l'avantage s'affaiblit nettement sur la 2e année presque partout (sauf Nasdaq et Nikkei).
 
 ⇒ **Russell 2000 ajouté au robot le 2026-11-02 en suivi papier silencieux** (US2000, sans alerte, coût 0,5 pt).
+
+## 32. « Bilan sanguin » mensuel des stratégies courtes (démarré le 2026-11-02, `tv_fetch.mjs` + `scalp_check.mjs`)
+TradingView (abonnement de l'utilisateur) ne charge que ~5 000 bougies : ~1 mois en 5 min. Plutôt que d'acheter des données,
+on CUMULE chaque mois les nouvelles bougies 5 min de NQ et ES dans `research/scalp_data/` (données jamais vues = vrai hors
+échantillon). Règles figées : A. ORB 5 min Zarattini (10R), B. cassure 5 min (2R), C. cassure 15 min (2R), D. cassure 1 h (robot).
+Frais aller-retour : futures micro NQ 1,1 pt / ES 0,75 pt ; CFD FTMO NQ 2,5 pt / ES 0,8 pt.
+**Octobre 2026 (≈ 20 trades par stratégie, aucune valeur statistique seule)** — net futures : NQ A +1,5R, B −6,3R, C −7,5R, D +6,3R ;
+ES A +0,6R, B +0,6R, C −3,0R, D +0,2R. Le chiffre qui comptera : le cumul à partir de ~200 trades (≈ 10 mois).
+Mode d'emploi : TradingView Desktop lancé avec `--remote-debugging-port=9222`, puis `node research/tv_fetch.mjs` et
+`node research/scalp_check.mjs`, au moins toutes les 4 semaines (sinon trou dans l'historique).
