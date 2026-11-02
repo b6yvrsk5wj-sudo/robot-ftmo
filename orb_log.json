@@ -61,5 +61,16 @@
     "exit": 2823.410888671875,
     "rGross": -1,
     "rNet": -1.022
+  },
+  {
+    "time": "2026-11-02T20:30:00.000Z",
+    "day": "2026-11-02",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 7557.94970703125,
+    "rGross": 1,
+    "rNet": 0.985
   }
 ]
