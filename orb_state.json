@@ -11,20 +11,14 @@
     "lo": 7610.08984375,
     "r": 52.14013671875,
     "i0T": 1793629800000,
-    "pos": {
-      "dir": -1,
-      "e": 7610.08984375,
-      "sl": 7662.22998046875,
-      "tp": 7505.8095703125,
-      "t": 1793640600000,
-      "risk": 52.14013671875
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1793647800000,
+    "lastT": 1793651400000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.98R"
+    "result1": "OBJECTIF +0.98R",
+    "result": "FIN DE SÉANCE +1.28R"
   },
   "US100": {
     "day": "2026-11-02",
@@ -32,20 +26,14 @@
     "lo": 28500.75390625,
     "r": 251.62890625,
     "i0T": 1793629800000,
-    "pos": {
-      "dir": -1,
-      "e": 28500.75390625,
-      "sl": 28752.3828125,
-      "tp": 27997.49609375,
-      "t": 1793637000000,
-      "risk": 251.62890625
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1793647800000,
+    "lastT": 1793651400000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "OBJECTIF +1.99R"
   },
   "US30": {
     "day": "2026-11-02",
@@ -54,9 +42,10 @@
     "r": 416.6796875,
     "i0T": 1793629800000,
     "pos": null,
-    "done": false,
-    "cancelled": false,
-    "lastT": 1793647800000
+    "done": true,
+    "cancelled": true,
+    "lastT": 1793651400000,
+    "result": "pas de trade"
   },
   "US2000": {
     "day": "2026-11-02",
