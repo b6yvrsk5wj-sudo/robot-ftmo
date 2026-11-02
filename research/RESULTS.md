@@ -958,3 +958,22 @@ filtre tendance EMA200 0,005 → −0,047 | stop au milieu −0,20 → −0,27.
 ⚠️ L'avantage de la base est divisé par 2 entre l'année 1 et l'année 2. Seul l'objectif 1R bat la base sur les deux années (repéré en
 regardant les deux, donc preuve faible). ⇒ Pas de changement de la stratégie en cours de test ; **le robot suit la variante 1R en
 parallèle sur papier** (`variant: '1R'` dans `orb_log.json`), les alertes restent sur la version 2R.
+
+## 31. Validation sur d'autres marchés (2026-11-02, `orb_monde.mjs`)
+Mêmes règles sur 7 indices jamais vus (2 ans de 1h, coût 0,01 % du prix). Contrôle = même entrée/stop/objectif, direction au hasard.
+| Marché | R/trade (2R) | 1re → 2e moitié | z vs direction hasard (2R / 1R) |
+|---|---|---|---|
+| Nasdaq 100 (réf.) | 0,080 | 0,089 → 0,071 | 2,2 / **3,7** |
+| Dow (réf.) | 0,057 | 0,089 → 0,025 | 1,8 / 2,1 |
+| S&P 500 (réf.) | 0,029 | 0,065 → −0,007 | 0,6 / 1,3 |
+| **Russell 2000 (jamais vu)** | **0,176** | 0,242 → 0,111 | **3,3 / 3,6** |
+| DAX | 0,112 | 0,192 → 0,033 | 1,6 / 0,5 |
+| CAC 40 | 0,075 | 0,151 → −0,001 | 0,8 / 0,8 |
+| Euro Stoxx 50 | 0,096 | 0,165 → 0,028 | 0,8 / 0,9 |
+| FTSE 100 | 0,004 | 0,010 → −0,002 | −0,1 / 0,1 |
+| Nikkei 225 | 0,025 | −0,012 → 0,063 | 0,4 / 0,5 |
+| Hang Seng | 0,036 | 0,059 → 0,014 | 0,3 / 0,1 |
+Lecture : résultat positif presque partout, mais **l'information sur la DIRECTION n'est significative qu'aux États-Unis** (Nasdaq,
+Russell 2000, Dow). Hors USA, le gain ne se distingue pas d'une direction au hasard (effet de la structure stop/objectif, pas de la
+cassure). **Le Russell 2000, marché jamais utilisé pour concevoir la règle, confirme l'effet US** (z 3,3-3,6). Point noir général :
+l'avantage s'affaiblit nettement sur la 2e année presque partout (sauf Nasdaq et Nikkei).
