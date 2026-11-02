@@ -28,5 +28,38 @@
     "entry": 7610.08984375,
     "sl": 7662.22998046875,
     "tp": 7505.8095703125
+  },
+  {
+    "time": "2026-11-02T19:30:00.000Z",
+    "day": "2026-11-02",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 28249.125,
+    "rGross": 1,
+    "rNet": 0.99
+  },
+  {
+    "time": "2026-11-02T19:30:00.000Z",
+    "day": "2026-11-02",
+    "instrument": "US2000",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "STOP",
+    "exit": 2823.410888671875,
+    "rGross": -1,
+    "rNet": -1.022
+  },
+  {
+    "time": "2026-11-02T19:30:00.000Z",
+    "day": "2026-11-02",
+    "instrument": "US2000",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "STOP",
+    "exit": 2823.410888671875,
+    "rGross": -1,
+    "rNet": -1.022
   }
 ]
