@@ -21,7 +21,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1793817000000,
+    "lastT": 1793820600000,
     "pos1": {
       "dir": 1,
       "e": 7709.8701171875,
@@ -41,7 +41,7 @@
     "pos": null,
     "done": false,
     "cancelled": false,
-    "lastT": 1793817000000
+    "lastT": 1793820600000
   },
   "US30": {
     "day": "2026-11-04",
@@ -59,7 +59,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1793817000000,
+    "lastT": 1793820600000,
     "pos1": {
       "dir": 1,
       "e": 53032.55078125,
@@ -86,7 +86,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1793817000000,
+    "lastT": 1793820600000,
     "pos1": {
       "dir": -1,
       "e": 2835.287841796875,
