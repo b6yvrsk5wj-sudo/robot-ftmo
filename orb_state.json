@@ -21,7 +21,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1793892600000,
+    "lastT": 1793896200000,
     "pos1": {
       "dir": -1,
       "e": 7470.06005859375,
@@ -48,7 +48,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1793892600000,
+    "lastT": 1793896200000,
     "pos1": {
       "dir": -1,
       "e": 26971.5390625,
@@ -75,7 +75,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1793892600000,
+    "lastT": 1793896200000,
     "pos1": {
       "dir": -1,
       "e": 52481.69921875,
@@ -102,15 +102,9 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1793892600000,
-    "pos1": {
-      "dir": -1,
-      "e": 2795.4443359375,
-      "sl": 2855.247802734375,
-      "tp": 2756.199951171875,
-      "t": 1793892600000,
-      "risk": 59.803466796875
-    },
-    "entered": true
+    "lastT": 1793896200000,
+    "pos1": null,
+    "entered": true,
+    "result1": "OBJECTIF +0.65R"
   }
 }
