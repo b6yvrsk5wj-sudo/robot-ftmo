@@ -33,7 +33,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794245400000,
+    "lastT": 1794249000000,
     "pos1": {
       "dir": 1,
       "e": 27750.67578125,
@@ -72,15 +72,9 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794245400000,
-    "pos1": {
-      "dir": 1,
-      "e": 2812.415771484375,
-      "sl": 2784.04052734375,
-      "tp": 2836.9853515625,
-      "t": 1794238200000,
-      "risk": 28.375244140625
-    },
-    "entered": true
+    "lastT": 1794249000000,
+    "pos1": null,
+    "entered": true,
+    "result1": "OBJECTIF +0.85R"
   }
 }
