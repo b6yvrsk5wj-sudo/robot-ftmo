@@ -14,7 +14,7 @@
     "pos": null,
     "done": false,
     "cancelled": false,
-    "lastT": 1794591000000
+    "lastT": 1794594600000
   },
   "US100": {
     "day": "2026-11-13",
@@ -32,7 +32,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794591000000,
+    "lastT": 1794594600000,
     "pos1": {
       "dir": -1,
       "e": 27639.75,
@@ -52,7 +52,7 @@
     "pos": null,
     "done": false,
     "cancelled": false,
-    "lastT": 1794591000000
+    "lastT": 1794594600000
   },
   "US2000": {
     "day": "2026-11-13",
@@ -70,7 +70,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794591000000,
+    "lastT": 1794594600000,
     "pos1": {
       "dir": -1,
       "e": 2769.752197265625,
