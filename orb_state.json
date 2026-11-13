@@ -12,9 +12,10 @@
     "r": 122.3798828125,
     "i0T": 1794580200000,
     "pos": null,
-    "done": false,
-    "cancelled": false,
-    "lastT": 1794598200000
+    "done": true,
+    "cancelled": true,
+    "lastT": 1794601800000,
+    "result": "pas de trade"
   },
   "US100": {
     "day": "2026-11-13",
@@ -22,26 +23,14 @@
     "lo": 27639.75,
     "r": 656.048828125,
     "i0T": 1794580200000,
-    "pos": {
-      "dir": -1,
-      "e": 27639.75,
-      "sl": 28295.798828125,
-      "tp": 26327.65234375,
-      "t": 1794583800000,
-      "risk": 656.048828125
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1794598200000,
-    "pos1": {
-      "dir": -1,
-      "e": 27639.75,
-      "sl": 28295.798828125,
-      "tp": 26983.701171875,
-      "t": 1794583800000,
-      "risk": 656.048828125
-    },
-    "entered": true
+    "lastT": 1794601800000,
+    "pos1": null,
+    "entered": true,
+    "result": "FIN DE SÉANCE -0.46R",
+    "result1": "FIN DE SÉANCE -0.46R"
   },
   "US30": {
     "day": "2026-11-13",
@@ -50,9 +39,10 @@
     "r": 503.62109375,
     "i0T": 1794580200000,
     "pos": null,
-    "done": false,
-    "cancelled": false,
-    "lastT": 1794598200000
+    "done": true,
+    "cancelled": true,
+    "lastT": 1794601800000,
+    "result": "pas de trade"
   },
   "US2000": {
     "day": "2026-11-13",
@@ -60,25 +50,13 @@
     "lo": 2771.544921875,
     "r": 34.357177734375,
     "i0T": 1794580200000,
-    "pos": {
-      "dir": -1,
-      "e": 2769.752197265625,
-      "sl": 2805.902099609375,
-      "tp": 2702.83056640625,
-      "t": 1794583800000,
-      "risk": 36.14990234375
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1794598200000,
-    "pos1": {
-      "dir": -1,
-      "e": 2769.752197265625,
-      "sl": 2805.902099609375,
-      "tp": 2737.187744140625,
-      "t": 1794583800000,
-      "risk": 36.14990234375
-    },
-    "entered": true
+    "lastT": 1794601800000,
+    "pos1": null,
+    "entered": true,
+    "result": "FIN DE SÉANCE -0.58R",
+    "result1": "FIN DE SÉANCE -0.58R"
   }
 }
