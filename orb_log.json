@@ -1041,5 +1041,16 @@
     "exit": 2743.145751953125,
     "rGross": 0.575,
     "rNet": 0.552
+  },
+  {
+    "time": "2026-11-16T20:30:00.000Z",
+    "day": "2026-11-16",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 51561.9609375,
+    "rGross": 1,
+    "rNet": 0.99
   }
 ]

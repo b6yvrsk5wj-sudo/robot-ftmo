@@ -21,7 +21,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794853800000,
+    "lastT": 1794857400000,
     "pos1": {
       "dir": -1,
       "e": 7451.7998046875,
@@ -48,7 +48,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794853800000,
+    "lastT": 1794857400000,
     "pos1": {
       "dir": -1,
       "e": 27256.8359375,
@@ -75,16 +75,10 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794853800000,
-    "pos1": {
-      "dir": -1,
-      "e": 51942.98046875,
-      "sl": 52324,
-      "tp": 51561.9609375,
-      "t": 1794846600000,
-      "risk": 381.01953125
-    },
-    "entered": true
+    "lastT": 1794857400000,
+    "pos1": null,
+    "entered": true,
+    "result1": "OBJECTIF +0.99R"
   },
   "US2000": {
     "day": "2026-11-16",
@@ -102,7 +96,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1794853800000,
+    "lastT": 1794857400000,
     "pos1": null,
     "entered": true,
     "result1": "OBJECTIF +0.55R"
