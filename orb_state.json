@@ -41,20 +41,14 @@
     "lo": 51183.6796875,
     "r": 279.8515625,
     "i0T": 1794925800000,
-    "pos": {
-      "dir": -1,
-      "e": 51183.6796875,
-      "sl": 51463.53125,
-      "tp": 50623.9765625,
-      "t": 1794929400000,
-      "risk": 279.8515625
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1794940200000,
+    "lastT": 1794943800000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "OBJECTIF +1.99R"
   },
   "US2000": {
     "day": "2026-11-17",
