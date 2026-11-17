@@ -1118,5 +1118,122 @@
     "exit": 2743.39306640625,
     "rGross": 0.563,
     "rNet": 0.54
+  },
+  {
+    "time": "2026-11-17T15:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US500",
+    "event": "OPEN",
+    "dir": "SHORT",
+    "entry": 7379.31982421875,
+    "sl": 7415.3701171875,
+    "tp": 7307.21923828125
+  },
+  {
+    "time": "2026-11-17T16:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "OBJECTIF",
+    "exit": 7307.21923828125,
+    "rGross": 2,
+    "rNet": 1.978
+  },
+  {
+    "time": "2026-11-17T16:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 7343.26953125,
+    "rGross": 1,
+    "rNet": 0.978
+  },
+  {
+    "time": "2026-11-17T15:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US100",
+    "event": "OPEN",
+    "dir": "SHORT",
+    "entry": 27054.904296875,
+    "sl": 27258.25,
+    "tp": 26648.212890625
+  },
+  {
+    "time": "2026-11-17T16:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "OBJECTIF",
+    "exit": 26648.212890625,
+    "rGross": 2,
+    "rNet": 1.988
+  },
+  {
+    "time": "2026-11-17T16:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 26851.55859375,
+    "rGross": 1,
+    "rNet": 0.988
+  },
+  {
+    "time": "2026-11-17T15:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US30",
+    "event": "OPEN",
+    "dir": "SHORT",
+    "entry": 51183.6796875,
+    "sl": 51463.53125,
+    "tp": 50623.9765625
+  },
+  {
+    "time": "2026-11-17T16:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 50903.828125,
+    "rGross": 1,
+    "rNet": 0.986
+  },
+  {
+    "time": "2026-11-17T15:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US2000",
+    "event": "OPEN",
+    "dir": "SHORT",
+    "entry": 2728.123291015625,
+    "sl": 2741.11279296875,
+    "tp": 2702.144287109375
+  },
+  {
+    "time": "2026-11-17T16:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US2000",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "OBJECTIF",
+    "exit": 2702.144287109375,
+    "rGross": 2,
+    "rNet": 1.962
+  },
+  {
+    "time": "2026-11-17T16:30:00.000Z",
+    "day": "2026-11-17",
+    "instrument": "US2000",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 2715.1337890625,
+    "rGross": 1,
+    "rNet": 0.962
   }
 ]
