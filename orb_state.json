@@ -11,20 +11,14 @@
     "lo": 7322.08984375,
     "r": 93.55029296875,
     "i0T": 1795098600000,
-    "pos": {
-      "dir": -1,
-      "e": 7322.08984375,
-      "sl": 7415.64013671875,
-      "tp": 7134.9892578125,
-      "t": 1795102200000,
-      "risk": 93.55029296875
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1795116600000,
+    "lastT": 1795120200000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "FIN DE SÉANCE +1.54R"
   },
   "US100": {
     "day": "2026-11-19",
@@ -32,20 +26,14 @@
     "lo": 27266.517578125,
     "r": 478.427734375,
     "i0T": 1795098600000,
-    "pos": {
-      "dir": -1,
-      "e": 27266.517578125,
-      "sl": 27744.9453125,
-      "tp": 26309.662109375,
-      "t": 1795102200000,
-      "risk": 478.427734375
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1795116600000,
+    "lastT": 1795120200000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "FIN DE SÉANCE +1.55R"
   },
   "US30": {
     "day": "2026-11-19",
@@ -53,20 +41,14 @@
     "lo": 49894.83984375,
     "r": 559.96875,
     "i0T": 1795098600000,
-    "pos": {
-      "dir": -1,
-      "e": 49892.48046875,
-      "sl": 50454.80859375,
-      "tp": 48774.90234375,
-      "t": 1795102200000,
-      "risk": 562.328125
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1795116600000,
+    "lastT": 1795120200000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.98R"
+    "result1": "OBJECTIF +0.98R",
+    "result": "FIN DE SÉANCE +1.38R"
   },
   "US2000": {
     "day": "2026-11-19",
