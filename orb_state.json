@@ -21,7 +21,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1795199400000,
+    "lastT": 1795203000000,
     "pos1": null,
     "entered": true,
     "result1": "OBJECTIF +0.99R"
@@ -42,7 +42,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1795199400000,
+    "lastT": 1795203000000,
     "pos1": null,
     "entered": true,
     "result1": "OBJECTIF +1.00R"
@@ -63,7 +63,7 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1795199400000,
+    "lastT": 1795203000000,
     "pos1": null,
     "entered": true,
     "result1": "OBJECTIF +0.99R"
@@ -84,15 +84,9 @@
     },
     "done": false,
     "cancelled": false,
-    "lastT": 1795199400000,
-    "pos1": {
-      "dir": -1,
-      "e": 2630.60400390625,
-      "sl": 2665.136962890625,
-      "tp": 2596.071044921875,
-      "t": 1795188600000,
-      "risk": 34.532958984375
-    },
-    "entered": true
+    "lastT": 1795203000000,
+    "pos1": null,
+    "entered": true,
+    "result1": "OBJECTIF +0.99R"
   }
 }
