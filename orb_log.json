@@ -1553,5 +1553,27 @@
     "exit": 7008.9296875,
     "rGross": 1,
     "rNet": 0.992
+  },
+  {
+    "time": "2026-11-20T19:30:00.000Z",
+    "day": "2026-11-20",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 25346.52734375,
+    "rGross": 1,
+    "rNet": 0.995
+  },
+  {
+    "time": "2026-11-20T19:30:00.000Z",
+    "day": "2026-11-20",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 48456.6796875,
+    "rGross": 1,
+    "rNet": 0.993
   }
 ]
