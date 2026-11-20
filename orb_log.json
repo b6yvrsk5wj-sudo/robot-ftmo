@@ -1586,5 +1586,49 @@
     "exit": 2595.874267578125,
     "rGross": 1.006,
     "rNet": 0.991
+  },
+  {
+    "time": "2026-11-20T21:00:00.000Z",
+    "day": "2026-11-20",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "OBJECTIF",
+    "exit": 6914.0595703125,
+    "rGross": 2,
+    "rNet": 1.992
+  },
+  {
+    "time": "2026-11-20T21:00:00.000Z",
+    "day": "2026-11-20",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 25065.40234375,
+    "rGross": 1.522,
+    "rNet": 1.517
+  },
+  {
+    "time": "2026-11-20T21:00:00.000Z",
+    "day": "2026-11-20",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 48184.69140625,
+    "rGross": 1.478,
+    "rNet": 1.471
+  },
+  {
+    "time": "2026-11-20T21:00:00.000Z",
+    "day": "2026-11-20",
+    "instrument": "US2000",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 2578.054443359375,
+    "rGross": 1.522,
+    "rNet": 1.507
   }
 ]
