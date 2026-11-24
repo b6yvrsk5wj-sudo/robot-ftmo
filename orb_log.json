@@ -1766,5 +1766,93 @@
     "entry": 7223.9501953125,
     "sl": 7138.93017578125,
     "tp": 7393.990234375
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 7202.4501953125,
+    "rGross": -0.253,
+    "rNet": -0.262
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 7202.4501953125,
+    "rGross": -0.253,
+    "rNet": -0.262
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 26216.63671875,
+    "rGross": -0.426,
+    "rNet": -0.433
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US100",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 26216.63671875,
+    "rGross": -0.426,
+    "rNet": -0.433
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 50026.4609375,
+    "rGross": 0.101,
+    "rNet": 0.095
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 50026.4609375,
+    "rGross": 0.101,
+    "rNet": 0.095
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US2000",
+    "event": "CLOSE",
+    "variant": "base",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 2684.51171875,
+    "rGross": 0.053,
+    "rNet": 0.035
+  },
+  {
+    "time": "2026-11-24T21:00:00.000Z",
+    "day": "2026-11-24",
+    "instrument": "US2000",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "FIN DE SÉANCE",
+    "exit": 2684.51171875,
+    "rGross": 0.053,
+    "rNet": 0.035
   }
 ]
