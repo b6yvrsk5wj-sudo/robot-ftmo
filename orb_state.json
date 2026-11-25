@@ -11,20 +11,14 @@
     "lo": 6970.10986328125,
     "r": 93.43017578125,
     "i0T": 1795617000000,
-    "pos": {
-      "dir": 1,
-      "e": 7063.5400390625,
-      "sl": 6970.10986328125,
-      "tp": 7250.400390625,
-      "t": 1795624200000,
-      "risk": 93.43017578125
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1795635000000,
+    "lastT": 1795638600000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "FIN DE SÉANCE +1.27R"
   },
   "US100": {
     "day": "2026-11-25",
@@ -32,20 +26,14 @@
     "lo": 24978.30078125,
     "r": 461.015625,
     "i0T": 1795617000000,
-    "pos": {
-      "dir": 1,
-      "e": 25439.31640625,
-      "sl": 24978.30078125,
-      "tp": 26361.34765625,
-      "t": 1795624200000,
-      "risk": 461.015625
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1795635000000,
+    "lastT": 1795638600000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "FIN DE SÉANCE +1.32R"
   },
   "US30": {
     "day": "2026-11-25",
@@ -53,20 +41,14 @@
     "lo": 48913.73828125,
     "r": 556.12109375,
     "i0T": 1795617000000,
-    "pos": {
-      "dir": 1,
-      "e": 49469.859375,
-      "sl": 48913.73828125,
-      "tp": 50582.1015625,
-      "t": 1795624200000,
-      "risk": 556.12109375
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1795635000000,
+    "lastT": 1795638600000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "FIN DE SÉANCE +1.27R"
   },
   "US2000": {
     "day": "2026-11-25",
@@ -74,19 +56,13 @@
     "lo": 2623.7763671875,
     "r": 38.76904296875,
     "i0T": 1795617000000,
-    "pos": {
-      "dir": 1,
-      "e": 2662.54541015625,
-      "sl": 2623.7763671875,
-      "tp": 2740.08349609375,
-      "t": 1795624200000,
-      "risk": 38.76904296875
-    },
-    "done": false,
+    "pos": null,
+    "done": true,
     "cancelled": false,
-    "lastT": 1795635000000,
+    "lastT": 1795638600000,
     "pos1": null,
     "entered": true,
-    "result1": "OBJECTIF +0.99R"
+    "result1": "OBJECTIF +0.99R",
+    "result": "FIN DE SÉANCE +1.04R"
   }
 }
