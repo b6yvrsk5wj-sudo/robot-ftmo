@@ -1894,5 +1894,27 @@
     "entry": 2662.54541015625,
     "sl": 2623.7763671875,
     "tp": 2740.08349609375
+  },
+  {
+    "time": "2026-11-25T18:30:00.000Z",
+    "day": "2026-11-25",
+    "instrument": "US500",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 7156.97021484375,
+    "rGross": 1,
+    "rNet": 0.991
+  },
+  {
+    "time": "2026-11-25T18:30:00.000Z",
+    "day": "2026-11-25",
+    "instrument": "US30",
+    "event": "CLOSE",
+    "variant": "1R",
+    "outcome": "OBJECTIF",
+    "exit": 50025.98046875,
+    "rGross": 1,
+    "rNet": 0.993
   }
 ]
